@@ -21,7 +21,6 @@ export default async function call_zome_fn(
       provenance: cellId[1],
       payload: null,
     };
-
     // add Payload to Param if there is a value to send to zome
     if (payload && !/\s/.test(payload)) param.payload = payload;
 
@@ -29,5 +28,6 @@ export default async function call_zome_fn(
   } catch (e) {
     console.log(e);
   }
+
   return message;
 }
