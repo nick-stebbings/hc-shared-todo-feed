@@ -1,24 +1,5 @@
 import { AppWebsocket } from "@holochain/conductor-api";
 
-// window.Buffer = require("buffer/").Buffer; // hack
-
-// class Index {
-// constructor() {
-// let btn = document.getElementById("btnCallZomeFn");
-// btn?.addEventListener("click", (e) => this.click(e));
-// }
-
-// async click(e) {
-// const appid = document.getElementById("txt_appid").value;
-// const port = document.getElementById("txt_port").value;
-// const fnname = document.getElementById("txt_fn").value;
-// const payload = document.getElementById("txt_payload").value;
-
-// const result = await this.call_zome_fn(port, appid, fnname, payload);
-
-// console.log(result);
-// }
-
 export default async function call_zome_fn(
   port: string,
   appid: string,
@@ -50,6 +31,3 @@ export default async function call_zome_fn(
   }
   return message;
 }
-// }
-
-// new Index();
