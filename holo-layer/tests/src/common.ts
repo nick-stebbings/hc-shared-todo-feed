@@ -8,7 +8,7 @@ export const Default_Developer_Address =
   "uhCAkbs0mibHm7rB0ZPkZZzhHC55KwmDxt6uR9x2XgFQ82OYvKwR7";
 export const instafeedDna = path.join(
   __dirname,
-  "../../workdir/dna/instafeed.dna"
+  "../../workdir/dna/hInstagram.dna"
 );
 
 import { Base64 } from "js-base64";
