@@ -8,7 +8,7 @@ module.exports = async (orchestrator) => {
     const alice_cell = await InstallAgentApp(s, "alice-cell");
 
     let result = await alice_cell.call("instafeed", "am_i_developer", null);
-
+    // TODO add test
     await sleep(10);
   });
 };

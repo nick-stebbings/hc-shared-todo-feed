@@ -1,33 +1,59 @@
-import { AppWebsocket } from "@holochain/conductor-api";
+import {
+  AppWebsocket,
+  InstalledCell,
+  CellId,
+  AppSignalCb,
+} from "@holochain/conductor-api";
+import { APP_WS_URL, APP_ID } from "./app/constants";
 
-export default async function call_zome_fn(
-  port: string,
-  appid: string,
-  fnname: string,
-  payload = null
-) {
-  let message;
-  const appConnection = await AppWebsocket.connect("ws://localhost:" + port);
-  const appInfo = await appConnection.appInfo({
-    installed_app_id: appid,
-  });
-  const cellId = appInfo.cell_data[0].cell_id;
-  try {
-    const param = {
-      cap: null,
-      cell_id: cellId,
-      zome_name: "instafeed",
-      fn_name: fnname,
-      provenance: cellId[1],
-      payload: null,
-    };
-    // add Payload to Param if there is a value to send to zome
-    if (payload && !/\s/.test(payload)) param.payload = payload;
+interface CellClient {
+  cellId: CellId;
+  callZome(zomeName: string, fnName: string, payload: any): Promise<any>;
+}
+class HolochainClient implements CellClient {
+  constructor(
+    protected appWebsocket: AppWebsocket,
+    protected cellData: InstalledCell
+  ) {}
 
-    message = await appConnection.callZome(param);
-  } catch (e) {
-    console.log(e);
+  get cellId() {
+    return this.cellData.cell_id;
   }
 
-  return message;
+  callZome(zomeName: string, fnName: string, payload: any): Promise<any> {
+    return this.appWebsocket.callZome({
+      cap: null as any,
+      cell_id: this.cellId,
+      zome_name: zomeName,
+      fn_name: fnName,
+      payload: payload,
+      provenance: this.cellId[1],
+    });
+  }
+
+  async addSignalHandler(signalHandler: AppSignalCb) {
+    const appWs = await AppWebsocket.connect(
+      this.appWebsocket.client.socket.url,
+      15000,
+      signalHandler
+    );
+
+    return {
+      unsubscribe: () => {
+        appWs.client.close();
+      },
+    };
+  }
+}
+
+export default async function setupAppWsConnection() {
+  const appWebsocket = await AppWebsocket.connect(APP_WS_URL, 12000);
+  const appInfo = await appWebsocket.appInfo({
+    installed_app_id: APP_ID,
+  });
+
+  const cellData = appInfo.cell_data[0];
+  const cellClient = new HolochainClient(appWebsocket, cellData);
+
+  return cellClient;
 }
