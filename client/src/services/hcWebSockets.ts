@@ -4,7 +4,7 @@ import {
   CellId,
   AppSignalCb,
 } from "@holochain/conductor-api";
-import { APP_WS_URL, APP_ID } from "./app/constants";
+import { APP_WS_URL, APP_ID } from "../app/constants";
 
 interface CellClient {
   cellId: CellId;

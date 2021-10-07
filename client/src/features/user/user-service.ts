@@ -1,5 +1,5 @@
 import { CellClient } from "@holochain-open-dev/cell-client";
-import { AgentProfile, Profile } from "../types";
+import { AgentProfile, Profile } from "./types";
 
 export class ProfilesService {
   constructor(public cellClient: CellClient, public zomeName = "profiles") {}

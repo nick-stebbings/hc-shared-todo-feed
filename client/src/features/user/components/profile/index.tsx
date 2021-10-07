@@ -1,34 +1,25 @@
 import React, { useEffect, useState } from "react";
-import appWsClient from "../../../../hcWebSockets";
-import { ProfilesService } from "../../services/userProfile";
-import { Profile as ProfileType } from "../../types";
+import { ProfileCard } from "./ProfileCard";
 
-import { useAppDispatch, useAppSelector } from "../../../../app/hooks";
-import { ProfileUsername } from "./ProfileUsername";
+import appWsClient from "@/services/hcWebSockets";
+
+import { Profile as ProfileType } from "../../types";
+import { gotOlder } from "../../actions";
+import { getAge } from "../../selectors";
+
+import { useAppDispatch, useAppSelector } from "@/app/hooks";
+import { useSelector } from "react-redux";
 
 export const Profile: React.FunctionComponent<{}> = () => {
   const dispatch = useAppDispatch();
-  const [myprofile, setMyprofile] = useState({});
-
-  useEffect(() => {
-    async function connect() {
-      const client = await appWsClient();
-      const profilesService = new ProfilesService(client);
-
-      const testProfile: ProfileType = {
-        nickname: "Nick",
-        fields: { age: "33" },
-      };
-      profilesService
-        .createProfile(testProfile)
-        .then((r) => console.log("Results:", r));
-    }
-    connect().then(() => console.log("Connected"));
-  }, []);
-
+  const age = useAppSelector(getAge);
+  const handleClick = () => {
+    dispatch(gotOlder());
+  };
   return (
     <>
-      <ProfileUsername></ProfileUsername>
+      <ProfileCard name={"nick"} age={age}></ProfileCard>
+      <button onClick={handleClick}></button>
     </>
   );
 };

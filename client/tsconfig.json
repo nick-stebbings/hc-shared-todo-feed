@@ -1,12 +1,13 @@
 {
   "compilerOptions": {
-    "target": "es2018",
+    "target": "es5",
+    "lib": ["dom", "dom.iterable", "esnext"],
     "module": "esnext",
     "moduleResolution": "node",
     "noEmitOnError": true,
     "lib": ["es2017", "dom"],
     "strict": true,
-    "esModuleInterop": false,
+    "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "experimentalDecorators": true,
     "importHelpers": true,
@@ -15,21 +16,21 @@
     "inlineSources": true,
     "rootDir": "./",
     "incremental": true,
-    // "target": "ESNext",
-    // "useDefineForClassFields": true,
-    // "lib": ["DOM", "DOM.Iterable", "ESNext"],
-    // "allowJs": false,
-    // "skipLibCheck": false,
-    // "esModuleInterop": false,
-    // "allowSyntheticDefaultImports": true,
-    // "strict": true,
-    // "forceConsistentCasingInFileNames": true,
-    // "module": "ESNext",
-    // "moduleResolution": "Node",
-    // "resolveJsonModule": true,
-    // "isolatedModules": true,
-    // "noEmit": true,
-    "jsx": "react-jsx"
+    "allowJs": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "jsx": "react",
+    "noFallthroughCasesInSwitch": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "baseUrl": "."
   },
-  "include": ["./src"]
+  "paths": {
+    "@/app/*": ["src/app/*"],
+    "@/features/*": ["src/features/*"],
+    "@/services/*": ["src/services/*"]
+  },
+  "include": ["src"],
+  "exclude": ["node_modules", "**/*.spec.ts"]
 }
