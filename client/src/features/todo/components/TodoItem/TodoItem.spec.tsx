@@ -11,7 +11,7 @@ function renderUI(props: ComponentProps) {
 test("renders item description in a list element", async () => {
   const text = "Go to the park";
   const { findByTestId, debug } = renderUI({ todoText: text });
-  debug();
   const listElement = screen.getByText(new RegExp(text));
+
   expect(listElement).toBeInTheDocument();
 });

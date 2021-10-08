@@ -12,7 +12,11 @@ export default defineConfig({
       entries: [
         {
           find: "@",
-          replacement: resolve("./src", "src"),
+          replacement: resolve("./src"),
+        },
+        {
+          find: "@services",
+          replacement: resolve("./src/services"),
         },
       ],
     }),
