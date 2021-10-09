@@ -8,7 +8,7 @@ export async function zomeCall(
   action: AnyAction
 ) {
   const app = await connectPromise;
-  const { cell_id, zome_name, fn_name, provenance, cellIdString } = action.meta;
+  const { cell_id, cellIdString, zome_name, fn_name, provenance } = action.meta;
   const { payload } = action;
   try {
     const response = await app.callZome({
@@ -46,8 +46,8 @@ export const holochainMiddleware = (appUrl: string): Middleware => (store) => {
   const connectPromise = AppWebsocket.connect(appUrl);
   return (next) => async (action: AnyAction) => {
     if (action.meta && action.meta.hcZomeCallAction) {
-      // zome call action
       next(action); // resend the original action so the UI can change based on requests
+      // zome call action
       return zomeCall(connectPromise, store, action);
     } else {
       next(action);

@@ -1,22 +1,27 @@
 import React, { useState } from "react";
 
+import { Profile as ProfileType } from "../../types";
 type ProfileDetailsProps = {
   nickname?: any;
   avatar?: string;
   children?: React.ReactNode;
+  handleSubmit?: (ev: any) => void;
+  setUserProfile?: (ev: any) => void;
 };
 
 export const ProfileCard: React.FunctionComponent<ProfileDetailsProps> = ({
   children,
   nickname,
   avatar,
+  handleSubmit,
+  setUserProfile,
 }) => {
   const userExists = !!nickname;
-  const handleSubmit = (e: any) => {
-    e.preventDefault();
-    e.target!.disabled = true;
-    e.target!.textContent = "loading";
+
+  const handleChange = (e: any) => {
+    setUserProfile({ nickname: e.target.value });
   };
+
   return (
     <div>
       {!userExists ? (
@@ -26,6 +31,8 @@ export const ProfileCard: React.FunctionComponent<ProfileDetailsProps> = ({
             id="user-nickname"
             name="user-nickname"
             placeholder="Pick a user nickname"
+            value={nickname || "enter"}
+            onChange={handleChange}
             type="text"
           ></input>
           <button type="submit" onClick={handleSubmit}>

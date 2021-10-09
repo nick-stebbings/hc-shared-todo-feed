@@ -1,6 +1,6 @@
 import { configureStore, ThunkAction, Action } from "@reduxjs/toolkit";
-import userReducer from "@/features/user/reducer";
-import { holochainMiddleware } from "@/services/redux-middleware";
+import userReducer from "@features/user/reducer";
+import { holochainMiddleware } from "@services/redux-middleware";
 import { APP_WS_URL } from "./constants";
 
 export const store = configureStore({
@@ -8,7 +8,9 @@ export const store = configureStore({
     user: userReducer,
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(holochainMiddleware(APP_WS_URL)),
+    getDefaultMiddleware({
+      serializableCheck: false,
+    }).concat(holochainMiddleware(APP_WS_URL)),
 });
 
 export type AppDispatch = typeof store.dispatch;

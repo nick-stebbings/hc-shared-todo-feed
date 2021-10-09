@@ -1,23 +1,25 @@
 import React from "react";
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 
 import userEvent from "@testing-library/user-event";
 const MockConductor = require("@holo-host/mock-conductor");
 const { ZOME_CALL_TYPE } = MockConductor;
-import { CellId } from "@/services/redux-middleware";
+import { CellId } from "@services/redux-middleware";
 import { Buffer } from "buffer";
 import { AppWebsocket, AdminWebsocket } from "@holochain/conductor-api";
+const PORT = "8888";
 
 import { ProfileCard } from "./ProfileCard";
 type ComponentProps = React.ComponentProps<typeof ProfileCard>;
 
+//Test Helpers
 function renderUI(props: ComponentProps) {
   return render(<ProfileCard {...props} />);
 }
 
+// Mocks
 import { userAvatar } from "./testImage";
 const testUsername = "Davey";
-const PORT = "8888";
 interface ZomeInput {
   number: number;
 }
@@ -35,23 +37,9 @@ const testZomePayload: ZomeCallPayload = {
   cell_id: "test-id",
   zome_name: "test_zome",
   fn_name: "test-fn",
-  provenance: "test-prov",
+  provenance: Buffer.from("test"),
   payload: { number: 1 },
 };
-
-// Given a fresh session (no registered user)
-// When the users have been fetched
-// Then we can see an input labelled Username
-// And the input has a fixed length of 20 chars
-// Then we can see a label for the input
-// And the label renders the text 'Username:'
-// Then we can see a button labelled 'Sign Up'
-// Given a user has already registered with this agent key
-// When the users have been fetched
-// Then we can see the current user name
-// And the username is in a span element
-// Then we can see an avatar
-// And the avatar is in a div element
 
 describe("<ProfileCard>", () => {
   describe("with a fresh session", () => {
@@ -83,18 +71,20 @@ describe("<ProfileCard>", () => {
 
     describe("<button> is clicked and the form is VALID", () => {
       var mockHolochainConductor: any;
-      const mockCallZomeFn = async () => {
-        const expectedResponse = {
-          field1: "value1",
-        };
-        mockHolochainConductor.once(ZOME_CALL_TYPE, testZomePayload);
+      const mockCallZomeFn = jest.fn(() =>
+        (async () => {
+          const expectedResponse = {
+            field1: "value1",
+          };
+          mockHolochainConductor.once(ZOME_CALL_TYPE, testZomePayload);
 
-        const adminWebsocket = await AppWebsocket.connect(
-          `ws://localhost:${PORT}`
-        );
-        const response = await adminWebsocket.callZome(testZomePayload);
-        expect(response).toEqual(expectedResponse);
-      };
+          const adminWebsocket = await AppWebsocket.connect(
+            `ws://localhost:${PORT}`
+          );
+          const response = await adminWebsocket.callZome(testZomePayload);
+          return expect(response).toEqual(expectedResponse);
+        })()
+      );
       beforeAll(() => {
         mockHolochainConductor = new MockConductor(PORT);
       });
@@ -104,14 +94,10 @@ describe("<ProfileCard>", () => {
         return mockHolochainConductor.closeApps();
       });
 
-      afterAll(() => {
-        return mockHolochainConductor.close();
-      });
-
-      it("calls handleSubmit", () => {});
+      afterAll(() => mockHolochainConductor.close());
 
       it("becomes disabled and says loading while waiting", async () => {
-        renderUI({});
+        renderUI({ handleSubmit: mockCallZomeFn });
         const buttonElement = screen.getByRole("button");
 
         userEvent.type(screen.getByLabelText(/Nickname/i), testUsername);
@@ -121,7 +107,16 @@ describe("<ProfileCard>", () => {
         expect(loadingState).toBeInTheDocument();
         expect(buttonElement).toBeDisabled();
       });
-      test("a message is returned with a confirmation", () => {});
+
+      it("calls zomeFn register nickname", async () => {
+        renderUI({});
+
+        userEvent.type(screen.getByLabelText(/Nickname/i), testUsername);
+        userEvent.click(screen.getByText(/Register/i));
+
+        expect(mockCallZomeFn).toHaveBeenCalledTimes(1);
+      });
+      it("returns message with a confirmation", () => {});
     });
     describe("<button> is clicked and the form is INVALID", () => {
       it("is disabled", () => {});

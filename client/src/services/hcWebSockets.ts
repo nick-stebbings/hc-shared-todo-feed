@@ -51,7 +51,7 @@ export default async function setupAppWsConnection() {
   const appInfo = await appWebsocket.appInfo({
     installed_app_id: APP_ID,
   });
-
+  console.log(appInfo);
   const cellData = appInfo.cell_data[0];
   const cellClient = new HolochainClient(appWebsocket, cellData);
 

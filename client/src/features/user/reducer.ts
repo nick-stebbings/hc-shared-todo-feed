@@ -1,25 +1,41 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, createAction, PayloadAction } from "@reduxjs/toolkit";
+import { asyncHoloAction } from "./actions";
 
 interface UserState {
-  name: string;
-  age: number;
+  nickname: string | null;
 }
 
 export const initialState: UserState = {
-  name: "Dave",
-  age: 29,
+  nickname: null,
 };
 
 export const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    gotOlder(state) {
-      state.age++;
-    },
-    doubledAge(state, action: PayloadAction<number>) {
-      state.age *= action.payload;
-    }
+    setName(state) {},
+    // doubledAge(state, action: PayloadAction<number>) {},
+  },
+  extraReducers: (builder) => {
+    builder.addCase(asyncHoloAction.success(), (state, action) => {
+      const {
+        payload,
+        type,
+        meta: { cellIdString },
+      } = action;
+      const { nickname, fields } = payload.profile;
+      debugger;
+      return { ...state, fields };
+    });
+    builder.addCase(asyncHoloAction.failure(), (state, action) => {
+      const {
+        payload,
+        type,
+        meta: { cellIdString },
+      } = action;
+      debugger;
+      return state;
+    });
   },
 });
 
