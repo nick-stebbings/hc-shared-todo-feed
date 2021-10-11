@@ -1,15 +1,19 @@
 import React, { useState } from "react";
-import { Profile as ProfileType } from "../../types";
-import { createUser } from "../../actions";
-import { ProfileCard } from "./ProfileCard";
 
 import { useAppDispatch } from "@app/hooks";
 import { store } from "@app/store";
 
-export const Profile: React.FunctionComponent<{}> = () => {
+import { Profile as ProfileType } from "../../types";
+import { createProfile } from "../../actions";
+import { ProfileCard } from "./ProfileCard";
+import { OtherProfiles } from "./OtherProfiles";
+
+export const Profiles: React.FunctionComponent<{}> = () => {
   const dispatch = useAppDispatch();
   const [userProfile, setUserProfile] = useState<ProfileType>(
     store.getState()?.user
+  );
+  const [otherUserProfiles, setOtherUserProfiles] = useState<[ProfileType]>([]
   );
   const [isValidForm, setIsValidForm] = useState<boolean>(false);
 
@@ -20,7 +24,7 @@ export const Profile: React.FunctionComponent<{}> = () => {
     const cellIdString = store.getState()?.cell?.cellIdString;
 
     dispatch(
-      createUser(
+      createProfile(
         cellIdString,
         userProfile?.nickname,
         userProfile?.fields?.avatar
@@ -29,12 +33,13 @@ export const Profile: React.FunctionComponent<{}> = () => {
   };
 
   return (
-    <React.Fragment>
+    <>
       <ProfileCard
         userProfile={userProfile}
         setUserProfile={setUserProfile}
         handleSubmit={handleCreateUser}
       />
-    </React.Fragment>
+      {isLoading ? <OtherProfiles>{otherUserProfiles}</OtherProfiles> : <p>Loading...</p>}
+    </>
   );
 };

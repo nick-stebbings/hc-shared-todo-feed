@@ -1,5 +1,5 @@
 import { useAppDispatch, useAppSelector } from "./app/hooks";
-import { Profile } from "@features/user/components/Profile";
+import { Profiles } from "@features/user/components/Profiles";
 import { List } from "../../components/List";
 import React from "react";
 
@@ -11,7 +11,7 @@ export const App: React.FC<indexProps> = ({}) => {
   return (
     <div className="App">
       <header className="App-header">
-        <Profile></Profile>
+        <Profiles />
       </header>
     </div>
   );

@@ -26,9 +26,10 @@
     "baseUrl": "."
   },
   "paths": {
-    "@/app/*": ["src/app/*"],
-    "@/features/*": ["src/features/*"],
-    "@/services/*": ["src/services/*"]
+    "@app/*": ["src/app/*"],
+    "@features/*": ["src/features/*"],
+    "@services/*": ["src/services/*"],
+    "@components/*": ["src/components/*"]
   },
   "include": ["src"],
   "exclude": ["node_modules", "**/*.spec.ts"]

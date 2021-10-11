@@ -19,6 +19,10 @@ export default defineConfig({
           replacement: resolve("./src/features"),
         },
         {
+          find: "@components",
+          replacement: resolve("./src/components"),
+        },
+        {
           find: "@app",
           replacement: resolve("./src/app"),
         },

@@ -1,6 +1,6 @@
 import { Profile } from "./types";
 import { createSlice, createAction, PayloadAction } from "@reduxjs/toolkit";
-import { asyncHoloAction } from "./actions";
+import { createProfileActionCreator } from "./actions";
 
 export const initialState: Profile = {
   nickname: "",
@@ -12,14 +12,14 @@ export const userSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(asyncHoloAction.success(), (state, action) => {
+    builder.addCase(createProfileActionCreator.success(), (state, action) => {
       const {
         payload,
         meta: { cellIdString },
       } = action;
       return { [payload.agent_pub_key]: { ...payload.profile } };
     });
-    builder.addCase(asyncHoloAction.failure(), (state, action) => {
+    builder.addCase(createProfileActionCreator.failure(), (state, action) => {
       const {
         payload,
         meta: { cellIdString },
