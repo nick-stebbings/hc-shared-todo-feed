@@ -48,6 +48,7 @@ export const holochainMiddleware = (appUrl: string): Middleware => (store) => {
     if (action.meta && action.meta.hcZomeCallAction) {
       next(action); // resend the original action so the UI can change based on requests
       // zome call action
+      debugger;
       return zomeCall(connectPromise, store, action);
     } else {
       next(action);
@@ -108,7 +109,7 @@ export const createZomeCallAsyncAction = (
   zome_name: string,
   fn_name: string
 ) => {
-  const callString = [zome_name, fn_name].join("/");
+  const callString = [zome_name, fn_name].join("/") + "_REQUESTED";
 
   const asyncActionCreator = createAsyncAction(
     callString,

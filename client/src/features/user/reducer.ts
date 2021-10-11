@@ -27,6 +27,14 @@ export const userSlice = createSlice({
       debugger;
       return state;
     });
+    builder.addCase(createProfileActionCreator.request(), (state, action) => {
+      const {
+        payload,
+        meta: { cellIdString },
+      } = action;
+      debugger;
+      return state;
+    });
   },
 });
 
