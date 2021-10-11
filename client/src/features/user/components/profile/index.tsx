@@ -18,6 +18,7 @@ export const Profile: React.FunctionComponent<{}> = () => {
     if (userProfile?.nickname === "") return setIsValidForm(false);
 
     const cellIdString = store.getState()?.cell?.cellIdString;
+
     dispatch(
       createUser(
         cellIdString,
@@ -28,12 +29,12 @@ export const Profile: React.FunctionComponent<{}> = () => {
   };
 
   return (
-    <>
+    <React.Fragment>
       <ProfileCard
         userProfile={userProfile}
         setUserProfile={setUserProfile}
         handleSubmit={handleCreateUser}
       />
-    </>
+    </React.Fragment>
   );
 };

@@ -20,6 +20,10 @@ function renderUI(props: ComponentProps) {
 // Mocks
 import { userAvatar } from "./testImage";
 const testUsername = "Davey";
+const testInput = {
+  nickname: testUsername,
+  fields: { avatar: userAvatar },
+};
 interface ZomeInput {
   number: number;
 }
@@ -126,26 +130,22 @@ describe("<ProfileCard>", () => {
 
   describe("when a user has already registered", () => {
     it("renders a span element with the username", () => {
-      const name = "Davey";
-      renderUI({ nickname: name });
+      renderUI({ userProfile: testInput });
 
-      const spanElement = screen.getByText(new RegExp(name));
+      const spanElement = screen.getByText(new RegExp(testUsername));
       expect(spanElement).toBeInTheDocument();
       expect(spanElement.nodeName).toBe("SPAN");
     });
 
     it("renders a div element with the avatar inside", () => {
-      const { getByAltText } = renderUI({
-        nickname: "Nick",
-        avatar: userAvatar,
-      });
+      const { getByAltText } = renderUI({ userProfile: testInput });
       const img = screen.getByAltText("User Avatar");
-      const div = img.parentNode;
+      const div = img?.parentNode;
 
-      expect(img).toBeInTheDocument();
-      expect(img).toHaveAttribute("src", `data:image/png;base64,${userAvatar}`);
       expect(div).toBeDefined();
       expect(div).toBeInTheDocument();
+      expect(img).toBeInTheDocument();
+      expect(img).toHaveAttribute("src", `data:image/png;base64,${userAvatar}`);
       expect(div!.nodeName).toBe("DIV");
     });
   });

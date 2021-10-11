@@ -14,14 +14,14 @@ export const ProfileCard: React.FunctionComponent<ProfileDetailsProps> = ({
   setUserProfile,
   handleSubmit,
 }) => {
-  const userExists = !!userProfile?.fields?.avatar;
+  const noUserExists = !userProfile?.fields?.avatar;
   const handleChange = (e: any) => {
     setUserProfile({ nickname: e.target.value });
   };
 
   return (
     <div>
-      {!userExists ? (
+      {noUserExists ? (
         <form>
           <label htmlFor="user-nickname">Nickname:</label>
           <input
