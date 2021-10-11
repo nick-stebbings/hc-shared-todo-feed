@@ -1,5 +1,5 @@
 import { CellId } from "@services/redux-middleware";
-const SET_CELL_ID = "SET_CELL_ID";
+const SET_CELL_ID = "cell/setCellIdString";
 
 const setCellId = (cellId: CellId) => {
   return {

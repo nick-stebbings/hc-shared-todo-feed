@@ -1,19 +1,19 @@
-import { createSlice, createAction, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface CellState {
-  stringId: string | null;
+  cellIdString: string | null;
 }
 
 export const initialState: CellState = {
-  stringId: null,
+  cellIdString: null,
 };
 
 export const cellSlice = createSlice({
   name: "cell",
   initialState,
   reducers: {
-    setStringId(state, action: PayloadAction<string>) {
-      debugger;
+    setCellIdString(state, action: PayloadAction<string>) {
+      return action.payload;
     },
   },
 });

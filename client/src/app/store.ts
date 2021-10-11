@@ -1,11 +1,14 @@
 import { configureStore, ThunkAction, Action } from "@reduxjs/toolkit";
 import userReducer from "@features/user/reducer";
+import cellReducer from "@features/cell/reducer";
+
 import { holochainMiddleware } from "@services/redux-middleware";
 import { APP_WS_URL } from "./constants";
 
 export const store = configureStore({
   reducer: {
     user: userReducer,
+    cell: cellReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

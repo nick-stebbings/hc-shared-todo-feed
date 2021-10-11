@@ -1,23 +1,20 @@
 import React, { useState } from "react";
-
 import { Profile as ProfileType } from "../../types";
+
 type ProfileDetailsProps = {
-  nickname?: any;
-  avatar?: string;
   children?: React.ReactNode;
-  handleSubmit?: (ev: any) => void;
+  userProfile: ProfileType | null;
   setUserProfile?: (ev: any) => void;
+  handleSubmit?: (ev: any) => void;
 };
 
 export const ProfileCard: React.FunctionComponent<ProfileDetailsProps> = ({
   children,
-  nickname,
-  avatar,
-  handleSubmit,
+  userProfile,
   setUserProfile,
+  handleSubmit,
 }) => {
-  const userExists = !!nickname;
-
+  const userExists = !!userProfile?.fields?.avatar;
   const handleChange = (e: any) => {
     setUserProfile({ nickname: e.target.value });
   };
@@ -31,7 +28,7 @@ export const ProfileCard: React.FunctionComponent<ProfileDetailsProps> = ({
             id="user-nickname"
             name="user-nickname"
             placeholder="Pick a user nickname"
-            value={nickname || "enter"}
+            value={`${userProfile?.nickname}`}
             onChange={handleChange}
             type="text"
           ></input>
@@ -44,9 +41,9 @@ export const ProfileCard: React.FunctionComponent<ProfileDetailsProps> = ({
           <img
             alt="User Avatar"
             aria-label="User Avatar"
-            src={`data:image/png;base64,${avatar}`}
+            src={`data:image/png;base64,${userProfile.fields?.avatar}`}
           ></img>
-          <span>{nickname}</span>
+          <span>{userProfile?.nickname}</span>
         </React.Fragment>
       )}
     </div>
