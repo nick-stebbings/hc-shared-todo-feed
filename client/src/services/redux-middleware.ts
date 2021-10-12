@@ -48,7 +48,6 @@ export const holochainMiddleware = (appUrl: string): Middleware => (store) => {
     if (action.meta && action.meta.hcZomeCallAction) {
       next(action); // resend the original action so the UI can change based on requests
       // zome call action
-      debugger;
       return zomeCall(connectPromise, store, action);
     } else {
       next(action);

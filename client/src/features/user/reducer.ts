@@ -1,10 +1,12 @@
 import { Profile } from "./types";
 import { createSlice, createAction, PayloadAction } from "@reduxjs/toolkit";
-import { createProfileActionCreator } from "./actions";
+import {
+  createProfileActionCreator,
+  fetchProfilesActionCreator,
+} from "./actions";
 
 export const initialState: Profile = {
-  nickname: "",
-  fields: { avatar: "" },
+  myProfile: { nickname: "", fields: { avatar: "" } },
 };
 
 export const userSlice = createSlice({
@@ -17,22 +19,28 @@ export const userSlice = createSlice({
         payload,
         meta: { cellIdString },
       } = action;
-      return { [payload.agent_pub_key]: { ...payload.profile } };
+      return { ...state, myProfile: { ...payload.profile } };
     });
     builder.addCase(createProfileActionCreator.failure(), (state, action) => {
       const {
         payload,
         meta: { cellIdString },
       } = action;
-      debugger;
       return state;
     });
-    builder.addCase(createProfileActionCreator.request(), (state, action) => {
+    builder.addCase(fetchProfilesActionCreator.success(), (state, action) => {
       const {
         payload,
         meta: { cellIdString },
       } = action;
-      debugger;
+
+      return { ...state, knownProfiles: [...payload] };
+    });
+    builder.addCase(fetchProfilesActionCreator.failure(), (state, action) => {
+      const {
+        payload,
+        meta: { cellIdString },
+      } = action;
       return state;
     });
   },

@@ -1,7 +1,9 @@
-import cellReducer from "./reducer";
 import { RootState } from "@app/store";
 
 export const getStringId = (state: RootState) => {
-  console.log(state);
   return state?.cell?.cellIdString;
+};
+
+export const getAgentPublicKey = (state: RootState) => {
+  return state?.cell?.agentPublicKey;
 };

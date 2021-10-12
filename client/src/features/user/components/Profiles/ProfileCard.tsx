@@ -21,7 +21,7 @@ export const ProfileCard: React.FunctionComponent<ProfileDetailsProps> = ({
 
   return (
     <div>
-      {noUserExists ? (
+      {noUserExists && handleSubmit ? (
         <form>
           <label htmlFor="user-nickname">Nickname:</label>
           <input

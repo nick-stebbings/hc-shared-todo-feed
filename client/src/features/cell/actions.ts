@@ -1,5 +1,8 @@
 import { CellId } from "@services/redux-middleware";
+import { AgentPubKeyB64 } from "@holochain-open-dev/core-types";
+
 const SET_CELL_ID = "cell/setCellIdString";
+const SET_AGENT_PUB_KEY = "cell/setAgentPublicKey";
 
 const setCellId = (cellId: CellId) => {
   return {
@@ -7,4 +10,10 @@ const setCellId = (cellId: CellId) => {
     payload: cellId,
   };
 };
-export { setCellId };
+const setAgentPublicKey = (agentPublicKey: AgentPubKeyB64) => {
+  return {
+    type: SET_AGENT_PUB_KEY,
+    payload: agentPublicKey,
+  };
+};
+export { setCellId, setAgentPublicKey };

@@ -1,5 +1,4 @@
 import { userSlice } from "./reducer";
-// const { gotOlder, doubledAge } = userSlice.actions;
 import { createZomeCallAsyncAction } from "@services/redux-middleware";
 import { base64string as defaultImage } from "./defaultImageb64";
 
@@ -9,7 +8,7 @@ const createProfileActionCreator = createZomeCallAsyncAction(
 );
 const fetchProfilesActionCreator = createZomeCallAsyncAction(
   "profiles",
-  "fetch_profiles"
+  "get_all_profiles"
 );
 
 const createProfile = (
@@ -27,18 +26,8 @@ const createProfile = (
     cellIdString,
   });
 
-const fetchProfiles = (
-  cellIdString: string,
-  nickname: string,
-  avatar: string = defaultImage
-) =>
+const fetchProfiles = (cellIdString: string) =>
   fetchProfilesActionCreator.create({
-    payload: {
-      nickname,
-      fields: {
-        avatar,
-      },
-    },
     cellIdString,
   });
 

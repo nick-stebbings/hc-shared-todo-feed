@@ -1,4 +1,6 @@
 import { configureStore, ThunkAction, Action } from "@reduxjs/toolkit";
+
+// Import Reducers From Slices
 import userReducer from "@features/user/reducer";
 import cellReducer from "@features/cell/reducer";
 import uiReducer from "@features/ui/reducer";
