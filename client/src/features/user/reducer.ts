@@ -1,11 +1,12 @@
-import { Profile } from "./types";
-import { createSlice, createAction, PayloadAction } from "@reduxjs/toolkit";
+import { convertUint8ToHash, getMyAgentProfile } from "@app/utils";
+import { Profile, ProfileStore, AgentProfile } from "./types";
+import { createSlice } from "@reduxjs/toolkit";
 import {
   createProfileActionCreator,
   fetchProfilesActionCreator,
 } from "./actions";
 
-export const initialState: Profile = {
+export const initialState: ProfileStore = {
   myProfile: { nickname: "", fields: { avatar: "" } },
 };
 
@@ -33,8 +34,13 @@ export const userSlice = createSlice({
         payload,
         meta: { cellIdString },
       } = action;
+      const agentPubKeyArr = cellIdString.split(":]").slice(1)[0].split(",");
+      const myProfile =
+        getMyAgentProfile(convertUint8ToHash(agentPubKeyArr), payload) ||
+        initialState.myProfile;
+      console.log("myProfile :>> ", myProfile);
 
-      return { ...state, knownProfiles: [...payload] };
+      return { ...state, myProfile, knownProfiles: [...payload] };
     });
     builder.addCase(fetchProfilesActionCreator.failure(), (state, action) => {
       const {

@@ -6,6 +6,5 @@ interface OtherProfilesProps {
 }
 
 export const OtherProfiles: React.FC<OtherProfilesProps> = ({ children }) => {
-  debugger;
   return <List listItems={children}></List>;
 };

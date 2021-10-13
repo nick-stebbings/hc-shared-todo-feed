@@ -3,8 +3,11 @@ export interface Profile {
   nickname: string;
   fields: Dictionary<string>;
 }
-
 export interface AgentProfile {
   agent_pub_key: AgentPubKeyB64;
   profile: Profile;
+}
+export interface ProfileStore {
+  myProfile: Profile;
+  knownProfiles: [AgentProfile];
 }
