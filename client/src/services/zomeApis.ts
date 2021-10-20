@@ -2,7 +2,7 @@
 // *** This allows action creators to be mocked during testing.
 
 import { createZomeCallAsyncAction } from "./reduxMiddleware";
-// import {todoActions} from '@features/todo/actions'
+// import {todoActions} from 'features/todo/actions'
 
 interface APIs {
   // One per zome

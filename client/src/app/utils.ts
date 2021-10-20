@@ -1,6 +1,6 @@
 import { Buffer } from "buffer";
 import { AgentPubKeyB64 } from "@holochain-open-dev/core-types";
-import { AgentProfile } from "@features/user/types";
+import { AgentProfile } from "features/user/types";
 
 export const convertUint8ToHash = (arr: Uint8Array): AgentPubKeyB64 =>
   Buffer.from(arr).toString("base64");

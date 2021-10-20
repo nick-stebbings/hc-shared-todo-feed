@@ -5,11 +5,12 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "serve": "vite preview",
-    "test": "npx jest --watch --detectOpenHandles --runInBand --forceExit"
+    "test": "npx jest --watch --detectOpenHandles --runInBand --forceExit --coverage"
   },
   "dependencies": {
     "@holochain-open-dev/cell-client": "git+https://github.com/holochain-open-dev/cell-client.git#build",
     "@holochain/conductor-api": "^0.2.1",
+    "deepmerge": "^4.2.2",
     "react": "^17.0.0",
     "react-dom": "^17.0.0",
     "react-redux": "^7.2.5"

@@ -3,12 +3,13 @@ import { render } from "react-dom";
 import { store } from "./app/store";
 import { Provider } from "react-redux";
 import { App } from "./App";
+import "./styles/styles.css";
 
 import { convertUint8ToHash } from "./app/utils";
 import { cellIdToString } from "services/redux-middleware";
 import connect from "services/hcWebSockets";
 
-import { setCellId, setAgentPublicKey } from "@features/cell/actions";
+import { setCellId, setAgentPublicKey } from "features/cell/actions";
 
 connect().then((client: any) => {
   const cellIdString = cellIdToString(client.cellData.cell_id);
