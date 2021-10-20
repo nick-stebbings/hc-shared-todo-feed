@@ -1,5 +1,5 @@
 import { userSlice } from "./reducer";
-import { createZomeCallAsyncAction } from "@services/redux-middleware";
+import { createZomeCallAsyncAction } from "services/redux-middleware";
 import { base64string as defaultImage } from "./defaultImageb64";
 
 const createProfileActionCreator = createZomeCallAsyncAction(

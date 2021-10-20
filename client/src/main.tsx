@@ -5,8 +5,8 @@ import { Provider } from "react-redux";
 import { App } from "./App";
 
 import { convertUint8ToHash } from "./app/utils";
-import { cellIdToString } from "@services/redux-middleware";
-import connect from "@services/hcWebSockets";
+import { cellIdToString } from "services/redux-middleware";
+import connect from "services/hcWebSockets";
 
 import { setCellId, setAgentPublicKey } from "@features/cell/actions";
 

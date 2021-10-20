@@ -1,11 +1,12 @@
 import { configureStore, ThunkAction, Action } from "@reduxjs/toolkit";
 
 // Import Reducers From Slices
-import userReducer from "@features/user/reducer";
-import cellReducer from "@features/cell/reducer";
-import uiReducer from "@features/ui/reducer";
+import userReducer from "features/user/reducer";
+import cellReducer from "features/cell/reducer";
+import uiReducer from "features/ui/reducer";
+import todoReducer from "features/todo/reducer";
 
-import { holochainMiddleware } from "@services/redux-middleware";
+import { holochainMiddleware } from "services/redux-middleware";
 import { APP_WS_URL } from "./constants";
 
 export const store = configureStore({
@@ -13,6 +14,7 @@ export const store = configureStore({
     user: userReducer,
     cell: cellReducer,
     ui: uiReducer,
+    todo: todoReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

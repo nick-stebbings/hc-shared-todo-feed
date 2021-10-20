@@ -1,4 +1,4 @@
-import { convertUint8ToHash, getMyAgentProfile } from "@app/utils";
+import { convertUint8ToHash, getMyAgentProfile } from "app/utils";
 import { Profile, ProfileStore, AgentProfile } from "./types";
 import { createSlice } from "@reduxjs/toolkit";
 import {

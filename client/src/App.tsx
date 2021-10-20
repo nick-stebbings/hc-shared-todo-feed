@@ -1,5 +1,5 @@
 import { useAppDispatch, useAppSelector } from "./app/hooks";
-import { Profiles } from "@features/user/components/Profiles";
+import { Profiles } from "features/user/components/Profiles";
 import { List } from "../../components/List";
 import React from "react";
 

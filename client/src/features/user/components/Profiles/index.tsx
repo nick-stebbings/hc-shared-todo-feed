@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 
-import { useAppDispatch, useAppSelector } from "@app/hooks";
-import { store } from "@app/store";
+import { useAppDispatch, useAppSelector } from "app/hooks";
+import { store } from "app/store";
 
 import { getRequestStatus } from "@features/ui/selectors";
 import { Profile as ProfileType, AgentProfile } from "../../types";

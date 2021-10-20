@@ -11,19 +11,19 @@ export default defineConfig({
     alias({
       entries: [
         {
-          find: "@services",
+          find: "services",
           replacement: resolve("./src/services"),
         },
         {
-          find: "@features",
+          find: "features",
           replacement: resolve("./src/features"),
         },
         {
-          find: "@components",
+          find: "components",
           replacement: resolve("./src/components"),
         },
         {
-          find: "@app",
+          find: "app",
           replacement: resolve("./src/app"),
         },
       ],
