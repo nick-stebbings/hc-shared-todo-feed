@@ -7,7 +7,7 @@ interface FooterProps {
 export const Footer: React.FC<FooterProps> = ({ count }) => {
   return (
     <footer>
-      <h1 class="todo-count">
+      <h1 className="todo-count">
         <strong>{count}</strong> {count == 1 ? "item" : "items"} left
       </h1>
       <ul className="filters">

@@ -1,15 +1,13 @@
 import React from "react";
 import { Todo } from "../../types";
-
 interface indexProps {
   todo: Todo;
+  handleDestroy?: (ev: any) => void;
 }
 
-const handleToggle = () => {};
+export const index: React.FC<indexProps> = ({ todo, handleDestroy }) => {
+  const handleToggle = () => {};
 
-const handleDestroy = () => {};
-
-export const index: React.FC<indexProps> = ({ todo }) => {
   return (
     <li>
       <label>{todo.description}</label>
@@ -19,7 +17,12 @@ export const index: React.FC<indexProps> = ({ todo }) => {
         className="toggle"
         defaultChecked={todo.status}
       />
-      <button type="button" onClick={handleDestroy} className="destroy" />
+      <button
+        type="button"
+        data-todo_id={todo.id}
+        onClick={handleDestroy}
+        className="destroy"
+      />
     </li>
   );
 };

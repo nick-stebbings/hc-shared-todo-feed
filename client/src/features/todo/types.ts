@@ -1,3 +1,4 @@
+import { TodoList } from "features/todo/components/TodoList";
 export interface Todo {
   id: string | number;
   description: string;
@@ -5,9 +6,10 @@ export interface Todo {
 }
 
 export interface TodoList {
+  id: string;
   todos: Todo[];
 }
 
-export interface TodoLists {
-  [key: string]: { todos: TodoList };
+export interface TodoLists<TodoList> {
+  [key: string]: TodoList;
 }

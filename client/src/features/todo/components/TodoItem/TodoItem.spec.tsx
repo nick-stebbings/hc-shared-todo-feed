@@ -1,5 +1,10 @@
 import React from "react";
-import { render } from "@testing-library/react";
+import {
+  render,
+  screen,
+  waitForElementToBeRemoved,
+} from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import {
   createList,
   createTodo,
@@ -25,14 +30,14 @@ function renderUI(props: ComponentProps) {
 // *** Redux/slice state ***
 
 test("it has the default empty list model state", () => {
-  store.dispatch(createList({ id: "1" }));
+  store.dispatch(createList({ list: { id: "1" } }));
   const listsState = store.getState().todo;
 
   expect(listsState["1"]?.todos).toEqual([]);
 });
 
 test("it adds a new todo", () => {
-  store.dispatch(createList({ id: "1" }));
+  store.dispatch(createList({ list: { id: "1" } }));
   const todo = { id: "101", description: "Get milk", status: true };
   store.dispatch(createTodo({ listId: "1", todo }));
   const listState = store.getState().todo["1"].todos;
@@ -41,7 +46,7 @@ test("it adds a new todo", () => {
 });
 
 test("it deletes a todo", () => {
-  store.dispatch(createList({ id: "1" }));
+  store.dispatch(createList({ list: { id: "1" } }));
   const todo = { id: "101", description: "Get milk", status: true };
   store.dispatch(createTodo({ listId: "1", todo }));
   const listState = store.getState().todo["1"].todos;
@@ -54,7 +59,7 @@ test("it deletes a todo", () => {
 
 test("it updates a todo by toggling status", () => {
   const todo = { id: "101", description: "Get milk", status: false };
-  store.dispatch(createList({ id: "1" }));
+  store.dispatch(createList({ list: { id: "1" } }));
   store.dispatch(createTodo({ listId: "1", todo }));
   const todoState = getTodoByIds("1", "101");
   const updatedTodo = { id: "101", description: "Get milk", status: true };
@@ -99,20 +104,38 @@ describe("it renders <TodoItem>", () => {
   });
 });
 describe("it handles toggling", () => {
-  test("it renders a todo item description as a label", () => {
+  describe("Given a todo", () => {
     const todo = { id: "101", description: "Get milk", status: false };
-    const { getByText } = renderUI({ todo });
-    const textElement = getByText(todo.description);
-    expect(textElement).toBeInTheDocument();
-    expect(textElement.nodeName).toBe("LABEL");
+
+    test("When I click toggle Then it has the class 'completed'", () => {
+      const { getByRole } = renderUI({ todo });
+
+      const checkbox = getByRole("checkbox");
+    });
   });
 });
 describe("it handles destroying", () => {
-  // test("it renders a todo item description as a label", () => {
-  //   const todo = { id: "101", description: "Get milk", status: false };
-  //   const { getByText } = renderUI({ todo });
-  //   const textElement = getByText(todo.description);
-  //   expect(textElement).toBeInTheDocument();
-  //   expect(textElement.nodeName).toBe("LABEL");
-  // });
+  describe("Given a todo and a callback fn", () => {
+    const todo = { id: "101", description: "Get milk", status: false };
+    const handleDestroy = jest.fn(() => {
+      store.dispatch(deleteTodo({ listId: "1", id: "101" }));
+    });
+    beforeEach(() => {
+      store.dispatch(createList({ list: { id: "1", todos: [todo] } }));
+      renderUI({
+        todo,
+        handleDestroy,
+      });
+    });
+
+    test("When I click the destroy button Then the list item is removed", async () => {
+      userEvent.click(screen.getByRole("button"));
+      await waitForElementToBeRemoved(() => screen.queryByText("Get milk"));
+    });
+
+    test("And the callback was called", async () => {
+      userEvent.click(screen.getByRole("button"));
+      expect(handleDestroy).toHaveBeenCalled();
+    });
+  });
 });

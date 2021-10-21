@@ -2,13 +2,18 @@ import React from "react";
 import { render } from "@testing-library/react";
 import { createList, deleteList, updateList } from "features/todo/actions";
 import { store } from "app/store";
+import { Provider } from "react-redux";
 
 import TodoList from "./index";
 
 type ComponentProps = React.ComponentProps<typeof TodoList>;
 
 function renderUI(props: ComponentProps) {
-  return render(<TodoList {...props} />);
+  return render(
+    <Provider store={store}>
+      <TodoList {...props} />
+    </Provider>
+  );
 }
 
 // *** Redux/slice state ***
@@ -16,11 +21,11 @@ function renderUI(props: ComponentProps) {
 test("it has the default empty lists model state", () => {
   const listsState = store.getState().todo;
 
-  expect(listsState).toBeNull();
+  expect(listsState).toEqual({});
 });
 
 test("it adds a new default list", () => {
-  store.dispatch(createList({ id: "1" }));
+  store.dispatch(createList({ list: { id: "1" } }));
   const newListsState = store.getState().todo;
 
   expect(newListsState["1"]?.todos).toHaveLength(0);
@@ -29,11 +34,11 @@ test("it adds a new default list", () => {
 test("it adds a new list", () => {
   const listsState = store.getState().todo;
   const newList = [
-    { id: 1, description: "Get milk", status: true },
-    { id: 2, description: "Get bread", status: false },
-    { id: 3, description: "Pick up mail", status: true },
+    { id: "1", description: "Get milk", status: true },
+    { id: "2", description: "Get bread", status: false },
+    { id: "3", description: "Pick up mail", status: true },
   ];
-  store.dispatch(createList({ id: "1", list: newList }));
+  store.dispatch(createList({ list: { id: "1", todos: newList } }));
   const newListsState = store.getState().todo;
 
   expect(newListsState["1"]?.todos).toEqual(newList);
@@ -41,11 +46,11 @@ test("it adds a new list", () => {
 
 test("it deletes a list", () => {
   const newList = [
-    { id: 1, description: "Get milk", status: true },
-    { id: 2, description: "Get bread", status: false },
-    { id: 3, description: "Pick up mail", status: true },
+    { id: "1", description: "Get milk", status: true },
+    { id: "2", description: "Get bread", status: false },
+    { id: "3", description: "Pick up mail", status: true },
   ];
-  store.dispatch(createList({ id: "1", list: newList }));
+  store.dispatch(createList({ list: { id: "1", todos: newList } }));
   const listsState = store.getState().todo;
 
   store.dispatch(deleteList({ id: "1" }));
@@ -57,19 +62,19 @@ test("it deletes a list", () => {
 
 test("it updates a list with different statuses", () => {
   const list = [
-    { id: 1, description: "Get milk", status: false },
-    { id: 2, description: "Get bread", status: true },
-    { id: 3, description: "Pick up mail", status: true },
+    { id: "1", description: "Get milk", status: false },
+    { id: "2", description: "Get bread", status: true },
+    { id: "3", description: "Pick up mail", status: true },
   ];
   const newList = [
-    { id: 1, description: "Get milk", status: true },
-    { id: 2, description: "Get bread", status: true },
-    { id: 3, description: "Pick up mail", status: false },
+    { id: "1", description: "Get milk", status: true },
+    { id: "2", description: "Get bread", status: true },
+    { id: "3", description: "Pick up mail", status: false },
   ];
-  store.dispatch(createList({ id: "1", list }));
+  store.dispatch(createList({ list: { id: "1", todos: list } }));
   const listsState = store.getState().todo;
 
-  store.dispatch(updateList({ id: "1", list: newList }));
+  store.dispatch(updateList({ list: { id: "1", todos: newList } }));
   const updatedListsState = store.getState().todo;
 
   expect(listsState["1"].todos[0].status).toBe(false);
@@ -80,19 +85,19 @@ test("it updates a list with different statuses", () => {
 
 test("it updates a list with different todos", () => {
   const list = [
-    { id: 1, description: "Get milk", status: false },
-    { id: 2, description: "Get bread", status: true },
-    { id: 3, description: "Pick up mail", status: true },
+    { id: "1", description: "Get milk", status: false },
+    { id: "2", description: "Get bread", status: true },
+    { id: "3", description: "Pick up mail", status: true },
   ];
   const newList = [
-    { id: 4, description: "Get beer", status: true },
-    { id: 5, description: "Get a life", status: false },
-    { id: 6, description: "Pick up a lady", status: false },
+    { id: "4", description: "Get beer", status: true },
+    { id: "5", description: "Get a life", status: false },
+    { id: "6", description: "Pick up a lady", status: false },
   ];
-  store.dispatch(createList({ id: "1", list }));
+  store.dispatch(createList({ list: { id: "1", todos: list } }));
   const listsState = store.getState().todo;
 
-  store.dispatch(updateList({ id: "1", list: newList }));
+  store.dispatch(updateList({ list: { id: "1", todos: newList } }));
   const updatedListsState = store.getState().todo;
 
   expect(listsState["1"].todos).toEqual(list);
@@ -104,10 +109,11 @@ test("it updates a list with different todos", () => {
 describe("it renders <TodoList>", () => {
   test("it renders a todo list with 3 todo items", () => {
     const list = {
+      id: "1",
       todos: [
-        { id: 1, description: "Get milk", status: false },
-        { id: 2, description: "Get bread", status: true },
-        { id: 3, description: "Pick up mail", status: true },
+        { id: "1", description: "Get milk", status: false },
+        { id: "2", description: "Get bread", status: true },
+        { id: "3", description: "Pick up mail", status: true },
       ],
     };
     const { getByText, getByTestId } = renderUI({ list });
@@ -124,10 +130,11 @@ describe("it renders <TodoList>", () => {
 
   test("it renders a todo list with 1 unchecked, 2 checked todos", () => {
     const list = {
+      id: "1",
       todos: [
-        { id: 1, description: "Get milk", status: false },
-        { id: 2, description: "Get bread", status: true },
-        { id: 3, description: "Pick up mail", status: true },
+        { id: "1", description: "Get milk", status: false },
+        { id: "2", description: "Get bread", status: true },
+        { id: "3", description: "Pick up mail", status: true },
       ],
     };
     const { getAllByRole } = renderUI({ list });
@@ -140,10 +147,11 @@ describe("it renders <TodoList>", () => {
 
   test("it renders a footer with filters for completed, uncompleted, active", () => {
     const list = {
+      id: "1",
       todos: [
-        { id: 1, description: "Get milk", status: false },
-        { id: 2, description: "Get bread", status: true },
-        { id: 3, description: "Pick up mail", status: true },
+        { id: "1", description: "Get milk", status: false },
+        { id: "2", description: "Get bread", status: true },
+        { id: "3", description: "Pick up mail", status: true },
       ],
     };
     const { getByRole, getByText } = renderUI({ list });
@@ -160,10 +168,11 @@ describe("it renders <TodoList>", () => {
 
   test("it renders a completed count", () => {
     const list = {
+      id: "1",
       todos: [
-        { id: 1, description: "Get milk", status: false },
-        { id: 2, description: "Get bread", status: true },
-        { id: 3, description: "Pick up mail", status: true },
+        { id: "1", description: "Get milk", status: false },
+        { id: "2", description: "Get bread", status: true },
+        { id: "3", description: "Pick up mail", status: true },
       ],
     };
     const { getByRole } = renderUI({ list });
@@ -175,10 +184,11 @@ describe("it renders <TodoList>", () => {
 
   test("it renders a clear button", () => {
     const list = {
+      id: "1",
       todos: [
-        { id: 1, description: "Get milk", status: false },
-        { id: 2, description: "Get bread", status: true },
-        { id: 3, description: "Pick up mail", status: true },
+        { id: "1", description: "Get milk", status: false },
+        { id: "2", description: "Get bread", status: true },
+        { id: "3", description: "Pick up mail", status: true },
       ],
     };
     const { getByText } = renderUI({ list });
