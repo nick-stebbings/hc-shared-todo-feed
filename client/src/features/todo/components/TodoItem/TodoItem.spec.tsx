@@ -2,6 +2,7 @@ import React from "react";
 import {
   render,
   screen,
+  waitFor,
   waitForElementToBeRemoved,
 } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
@@ -89,7 +90,7 @@ describe("it renders <TodoItem>", () => {
   test("it renders a checkbox with todo status for todo completion", () => {
     const todo = { id: "101", description: "Get milk", status: false };
     const { getByRole } = renderUI({ todo });
-    const checkBox = getByRole("checkbox");
+    const checkBox = getByRole("checkbox") as HTMLInputElement;
 
     expect(checkBox).toBeInTheDocument();
     expect(checkBox.checked).toEqual(todo.status);
@@ -104,13 +105,43 @@ describe("it renders <TodoItem>", () => {
   });
 });
 describe("it handles toggling", () => {
-  describe("Given a todo", () => {
+  describe("Given a completed todo and a callback fn", () => {
     const todo = { id: "101", description: "Get milk", status: false };
 
-    test("When I click toggle Then it has the class 'completed'", () => {
-      const { getByRole } = renderUI({ todo });
+    const handleToggle = jest.fn(() => {
+      store.dispatch(
+        updateTodo({ listId: "1", todoPatch: { id: "101", status: true } })
+      );
+    });
 
-      const checkbox = getByRole("checkbox");
+    beforeEach(() => {
+      store.dispatch(createList({ list: { id: "1", todos: [todo] } }));
+      renderUI({
+        todo,
+        handleToggle,
+      });
+    });
+
+    test("When I click toggle Then it has the view for 'incomplete'", async () => {
+      const preCheckboxParent: ParentNode = screen.getByTestId("toggle-101")
+        .parentNode;
+      const currentToggleState = preCheckboxParent.classList.contains(
+        "complete"
+      ); //true
+      userEvent.click(screen.getByTestId("toggle-101"));
+
+      const postCheckbox = await screen.findByTestId("toggle-101");
+
+      const newCurrentToggleState = postCheckbox.parentNode.classList.contains(
+        "complete"
+      );
+      debugger;
+      expect(newCurrentToggleState).toBe(!currentToggleState);
+    });
+
+    test("And the callback was called", () => {
+      userEvent.click(screen.getByTestId("toggle-101"));
+      expect(handleToggle).toHaveBeenCalled();
     });
   });
 });
@@ -129,12 +160,12 @@ describe("it handles destroying", () => {
     });
 
     test("When I click the destroy button Then the list item is removed", async () => {
-      userEvent.click(screen.getByRole("button"));
-      await waitForElementToBeRemoved(() => screen.queryByText("Get milk"));
+      userEvent.click(screen.getByTestId("delete-101"));
+      await waitFor(() => expect(screen.queryByText("Get milk")).toBeNull());
     });
 
-    test("And the callback was called", async () => {
-      userEvent.click(screen.getByRole("button"));
+    test("And the callback was called", () => {
+      userEvent.click(screen.getByTestId("delete-101"));
       expect(handleDestroy).toHaveBeenCalled();
     });
   });

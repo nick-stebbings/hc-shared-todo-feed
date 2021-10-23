@@ -6,7 +6,7 @@ export interface Todo {
 }
 
 export interface TodoList {
-  id: string;
+  id?: string;
   todos: Todo[];
 }
 

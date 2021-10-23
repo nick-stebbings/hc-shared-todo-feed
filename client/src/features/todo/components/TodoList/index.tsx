@@ -6,7 +6,7 @@ import { Footer } from "./Footer";
 
 import { store } from "app/store";
 import { useAppDispatch } from "app/hooks";
-import { deleteTodo } from "../../actions";
+import { deleteTodo, updateTodo } from "../../actions";
 
 interface indexProps {
   list: TodoList;
@@ -17,18 +17,26 @@ const index: React.FC<indexProps> = ({ list: { todos, id: listId } }) => {
     id: listId,
     todos,
   });
+
   const dispatch = useAppDispatch();
+
+  const handleToggle = (e: any) => {
+    const newValue = e.target.checked;
+    const id = e.target.parentNode.parentNode.dataset.todo_id;
+    const todoPatch = { id, status: newValue };
+    store.dispatch(updateTodo({ listId, todoPatch }));
+  };
+
   const handleDestroy = (e: any) => {
-    const tdId = e.target.dataset.todo_id;
+    const tdId = e.target.parentNode.dataset.todo_id;
     const deleteAction = deleteTodo({
       listId,
       id: tdId,
     });
     dispatch(deleteAction);
-    debugger;
     setCurrentList({
       id: listId,
-      todos: todos.filter((td: any) => td.id !== tdId),
+      todos: store.getState().todo[listId].todos,
     });
   };
 
@@ -40,6 +48,7 @@ const index: React.FC<indexProps> = ({ list: { todos, id: listId } }) => {
             <TodoItem
               key={listItem.id}
               todo={listItem}
+              handleToggle={handleToggle}
               handleDestroy={handleDestroy}
             />
           );

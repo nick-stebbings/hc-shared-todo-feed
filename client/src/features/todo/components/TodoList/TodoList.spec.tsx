@@ -1,6 +1,12 @@
 import React from "react";
-import { render } from "@testing-library/react";
+import {
+  render,
+  screen,
+  waitForElementToBeRemoved,
+} from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { createList, deleteList, updateList } from "features/todo/actions";
+import { initialState } from "features/todo/reducer";
 import { store } from "app/store";
 import { Provider } from "react-redux";
 
@@ -21,7 +27,7 @@ function renderUI(props: ComponentProps) {
 test("it has the default empty lists model state", () => {
   const listsState = store.getState().todo;
 
-  expect(listsState).toEqual({});
+  expect(listsState).toEqual(initialState);
 });
 
 test("it adds a new default list", () => {
@@ -196,5 +202,89 @@ describe("it renders <TodoList>", () => {
 
     expect(clearButton).toBeInTheDocument();
     expect(clearButton.nodeName).toBe("BUTTON");
+  });
+});
+
+describe("it handles toggling", () => {
+  describe("Given a list with a completed todo and two uncompleted todos", () => {
+    const list = {
+      id: "1",
+      todos: [
+        { id: "101", description: "Get milk", status: false },
+        { id: "102", description: "Get bread", status: false },
+        { id: "103", description: "Pick up mail", status: true },
+      ],
+    };
+
+    beforeEach(() => {
+      store.dispatch(createList({ list }));
+      renderUI({
+        list,
+      });
+    });
+
+    test("When I click toggle on the first todo Then it has changed the view to 'incomplete' for *just* the first todo", () => {
+      let unchecked = screen.getAllByRole("checkbox", { checked: false });
+      let checked = screen.getAllByRole("checkbox", { checked: true });
+      expect(unchecked.length).toBe(2);
+      expect(checked.length).toBe(1);
+
+      userEvent.click(screen.getByTestId("toggle-101"));
+
+      unchecked = screen.getAllByRole("checkbox", { checked: false });
+      checked = screen.getAllByRole("checkbox", { checked: true });
+
+      expect(unchecked.length).toBe(1);
+      expect(checked.length).toBe(2);
+    });
+
+    test("and the count is incremented", () => {
+      let count = screen.getByRole("heading");
+      expect(count.textContent).toMatch(/1/);
+
+      userEvent.click(screen.getByTestId("toggle-101"));
+
+      count = screen.getByRole("heading");
+      expect(count.textContent).toMatch(/ 2 /);
+    });
+  });
+});
+
+describe("it handles destroying", () => {
+  describe("Given a list with 3 todos", () => {
+    const list = {
+      id: "1",
+      todos: [
+        { id: "101", description: "Get milk", status: false },
+        { id: "102", description: "Get bread", status: false },
+        { id: "103", description: "Pick up mail", status: true },
+      ],
+    };
+
+    beforeEach(() => {
+      store.dispatch(createList({ list }));
+      renderUI({
+        list,
+      });
+    });
+
+    test("When I click destroy on the first todo Then it has deleted the first todo and *just* the first todo", async () => {
+      let listItems = screen
+        .getAllByRole("listitem")
+        .filter((li) => li.dataset?.todo_id);
+      expect(listItems.length).toBe(3);
+
+      const deletedItem = screen.getByTestId("delete-101");
+      await waitForElementToBeRemoved(deletedItem);
+      userEvent.click(screen.getByTestId("delete-101"));
+      listItems = screen.getAllByRole("listitem").filter((li) => {
+        return li.dataset?.todo_id;
+      });
+
+      expect(listItems.length).toBe(2);
+
+      expect(screen.getByTestId("delete-102").parentNode).toBeInTheDocument();
+      expect(screen.getByTestId("delete-103").parentNode).toBeInTheDocument();
+    });
   });
 });
