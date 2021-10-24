@@ -1,6 +1,11 @@
 import React from "react";
 import { render, screen, waitFor, fireEvent } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+
+const MockConductor = require("@holo-host/mock-conductor");
+import { mockCallZomeFn } from "setupTests";
+import api from "services/zomeApis";
+
 import { createList, deleteList, updateList } from "features/todo/actions";
 import { initialState } from "features/todo/reducer";
 import { store } from "app/store";
@@ -184,7 +189,7 @@ describe("it renders <TodoList>", () => {
     const count = getByRole("heading");
 
     expect(count).toBeInTheDocument();
-    expect(count.textContent).toMatch(/2/);
+    expect(count.textContent).toMatch(/1/);
   });
 
   test("it renders a clear button", () => {
@@ -201,6 +206,22 @@ describe("it renders <TodoList>", () => {
 
     expect(clearButton).toBeInTheDocument();
     expect(clearButton.nodeName).toBe("BUTTON");
+  });
+
+  test("it renders a save button", () => {
+    const list = {
+      id: "1",
+      todos: [
+        { id: "1", description: "Get milk", status: false },
+        { id: "2", description: "Get bread", status: true },
+        { id: "3", description: "Pick up mail", status: true },
+      ],
+    };
+    const { getByText } = renderUI({ list });
+    const saveButton = getByText(/save/i);
+
+    expect(saveButton).toBeInTheDocument();
+    expect(saveButton.nodeName).toBe("BUTTON");
   });
 
   test("it renders a text input", () => {
@@ -250,12 +271,12 @@ describe("it handles toggling", () => {
 
     test("And the count is incremented", () => {
       let count = screen.getByRole("heading");
-      expect(count.textContent).toMatch(/1/);
+      expect(count.textContent).toMatch(/2/);
 
       userEvent.click(screen.getByTestId("toggle-101"));
 
       count = screen.getByRole("heading");
-      expect(count.textContent).toMatch(/2 /);
+      expect(count.textContent).toMatch(/1 /);
     });
   });
 });
@@ -304,9 +325,9 @@ describe("it handles destroying", () => {
       expect(screen.getByTestId("delete-103").parentNode).toBeInTheDocument();
     });
 
-    test("And the count is the same", () => {
+    test("And the count is decremented", () => {
       let count = screen.getByRole("heading");
-      expect(count.textContent).toMatch(/1 /);
+      expect(count.textContent).toMatch(/2 /);
 
       userEvent.click(screen.getByTestId("delete-101"));
 
@@ -337,10 +358,40 @@ describe("it handles destroying", () => {
 
     test("And the count is decremented", () => {
       let count = screen.getByRole("heading");
-      expect(count.textContent).toMatch(/1 /);
+      expect(count.textContent).toMatch(/2 /);
 
       userEvent.click(screen.getByTestId("delete-101"));
       userEvent.click(screen.getByTestId("delete-103"));
+
+      count = screen.getByRole("heading");
+      expect(count.textContent).toMatch(/1 /);
+    });
+
+    test("When I click clear (destroy all)  Then it has deleted all todos", async () => {
+      // Check initial state
+      let listItems = screen
+        .getAllByRole("listitem")
+        .filter((li) => li.dataset?.todo_id);
+      expect(listItems.length).toBe(3);
+
+      const deletedItemNode1 = screen.queryByTestId("delete-101");
+      const deletedItemNode2 = screen.queryByTestId("delete-102");
+      const deletedItemNode3 = screen.queryByTestId("delete-103");
+
+      waitFor(() => expect(deletedItemNode1).toBeNull());
+      waitFor(() => expect(deletedItemNode2).toBeNull());
+      waitFor(() => expect(deletedItemNode3).toBeNull());
+      userEvent.click(screen.getByRole("button", { name: /Clear/i }));
+
+      // expect(listItems.length).toBe(0);
+      // TODO: Figure out how to update the view with callback
+    });
+
+    test("And the count is decremented", () => {
+      let count = screen.getByRole("heading");
+      expect(count.textContent).toMatch(/2 /);
+
+      userEvent.click(screen.getByRole("button", { name: /Clear/i }));
 
       count = screen.getByRole("heading");
       expect(count.textContent).toMatch(/0 /);
@@ -366,27 +417,48 @@ describe("it handles adding an item", () => {
       const textBox = screen.getByPlaceholderText("Add a Todo and press enter");
 
       userEvent.type(textBox, "Get bread");
-      fireEvent.keyDown(textBox);
+      fireEvent.keyDown(textBox, {
+        key: "Enter",
+      });
       const listItems = await screen.findAllByRole("listitem");
-      expect(onlyTodos(listItems)).toBe(2);
+      waitFor(() => expect(onlyTodos(listItems)).toBe(2)); //todo
     });
 
-    test("And the 2nd item is the same as what was input", async () => {
-      // userEvent.click(screen.getByTestId("filter-completed"));
-      // const listItems = await screen.findAllByRole("listitem");
-      // expect(onlyTodos(listItems)).toBe(1);
+    test("And the 2nd item is the same as what was input", () => {
+      const textBox = screen.getByPlaceholderText("Add a Todo and press enter");
+
+      userEvent.type(textBox, "Get bread");
+      fireEvent.keyDown(textBox, {
+        key: "Enter",
+      });
+
+      expect(screen.findByText("Get bread")).toBeInTheDocument();
     });
 
-    test("And the 4th item has status incomplete", async () => {
-      // userEvent.click(screen.getByTestId("filter-completed"));
-      // const listItems = await screen.findAllByRole("listitem");
-      // expect(onlyTodos(listItems)).toBe(1);
-    });
+    test("And the count is incremented", async () => {
+      let count = screen.getByRole("heading");
+      expect(count.textContent).toMatch(/1 /);
+      const textBox = screen.getByPlaceholderText("Add a Todo and press enter");
 
-    test("And the count remains the same", async () => {
-      // userEvent.click(screen.getByTestId("filter-completed"));
-      // const listItems = await screen.findAllByRole("listitem");
-      // expect(onlyTodos(listItems)).toBe(1);
+      userEvent.type(textBox, "Get bread");
+      fireEvent.keyDown(textBox, {
+        key: "Enter",
+      });
+      waitFor(() => {
+        count = screen.getByRole("heading");
+        expect(count.textContent).toMatch(/2 /); //todo ?
+      });
+    });
+    test("And the input is cleared", async () => {
+      const textBox = screen.getByPlaceholderText("Add a Todo and press enter");
+
+      userEvent.type(textBox, "Get bread");
+      fireEvent.keyDown(textBox, {
+        key: "Enter",
+      });
+
+      waitFor(expect(screen.getByDisplayValue("")).toBeInTheDocument());
+      debugger;
     });
   });
 });
@@ -435,7 +507,8 @@ describe("it handles filtering", () => {
 // ***  Zome calls to store the data on the DHT ***
 
 describe("it handles saving the entire list", () => {
-  describe("Given a list with 3 todos", () => {
+  describe("Given a list with 3 todos and a mock zome", () => {
+    var mockHolochainConductor: any;
     const list = {
       id: "1",
       todos: [
@@ -445,17 +518,32 @@ describe("it handles saving the entire list", () => {
       ],
     };
 
-    // beforeEach(() => {
-    //   store.dispatch(createList({ list }));
-    //   renderUI({
-    //     list,
-    //   });
-    // });
+    beforeAll(() => {
+      mockHolochainConductor = new MockConductor("8888");
+      // api.todofeed.update_todo = mockCallZomeFn(mockHolochainConductor);
+    });
+
+    beforeEach(() => {
+      store.dispatch(createList({ list }));
+      renderUI({
+        list,
+      });
+    });
+
+    afterEach(() => {
+      mockHolochainConductor.clearResponses();
+      return mockHolochainConductor.closeApps();
+    });
+
+    afterAll(() => mockHolochainConductor.close());
 
     test("When I click the save button Then it fires a zome function call to add the entry", async () => {
-      // userEvent.click(screen.getByTestId("filter-completed"));
-      // const listItems = await screen.findAllByRole("listitem");
-      // expect(onlyTodos(listItems)).toBe(1);
+      userEvent.click(screen.getByRole("button", { name: /save/i }));
+      console.log(api.todofeed)
+      api.todofeed.update_todo = []; // mockCallZomeFn(mockHolochainConductor)
+      console.log(api.todofeed)
+      //   // const listItems = await screen.findAllByRole("listitem");
+      //   // expect(onlyTodos(listItems)).toBe(1);
     });
   });
 });

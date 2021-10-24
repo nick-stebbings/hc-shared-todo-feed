@@ -22,7 +22,13 @@ export const Footer: React.FC<FooterProps> = ({
         <li data-testid={"filter-completed"}>Completed</li>
       </ul>
 
-      <button className="clear-completed">Clear</button>
+      <button className="clear-completed" onClick={handleDestroyAll}>
+        Clear
+      </button>
+
+      <button className="save-list" onClick={handleDestroyAll}>
+        Save
+      </button>
     </footer>
   );
 };

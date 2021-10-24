@@ -2,12 +2,11 @@
 // *** This allows action creators to be mocked during testing.
 
 import { createZomeCallAsyncAction } from "./reduxMiddleware";
-// import {todoActions} from 'features/todo/actions'
 
 interface APIs {
   // One per zome
   profiles: object;
-  instafeed: object;
+  todofeed: object;
 }
 
 enum userProfilesActionStrings {
@@ -18,12 +17,25 @@ enum userProfilesActionStrings {
   "search_profiles",
 }
 
-const apis: APIs = { profiles: {}, instafeed: {} };
+enum todoFeedActionStrings {
+  "update_todolist",
+}
+
+const apis: APIs = { profiles: {}, todofeed: {} };
 
 for (const zomeFunctionName in userProfilesActionStrings) {
   if (isNaN(+zomeFunctionName)) {
     apis.profiles[zomeFunctionName] = createZomeCallAsyncAction(
       "profiles",
+      zomeFunctionName
+    );
+  }
+}
+
+for (const zomeFunctionName in todoFeedActionStrings) {
+  if (isNaN(+zomeFunctionName)) {
+    apis.todofeed[zomeFunctionName] = createZomeCallAsyncAction(
+      "instafeed",
       zomeFunctionName
     );
   }
