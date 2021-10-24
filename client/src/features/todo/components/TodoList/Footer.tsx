@@ -4,12 +4,14 @@ interface FooterProps {
   count: number;
   handleFilter?: (ev: any, setList: any) => void;
   handleDestroyAll?: (ev: any) => void;
+  handleSaveList?: (ev: any) => void;
 }
 
 export const Footer: React.FC<FooterProps> = ({
   count,
   handleFilter,
   handleDestroyAll,
+  handleSaveList,
 }) => {
   return (
     <footer>
@@ -22,11 +24,15 @@ export const Footer: React.FC<FooterProps> = ({
         <li data-testid={"filter-completed"}>Completed</li>
       </ul>
 
-      <button className="clear-completed" onClick={handleDestroyAll}>
+      <button
+        name="clear"
+        className="clear-completed"
+        onClick={handleDestroyAll}
+      >
         Clear
       </button>
 
-      <button className="save-list" onClick={handleDestroyAll}>
+      <button name="save" className="save-list" onClick={handleSaveList}>
         Save
       </button>
     </footer>

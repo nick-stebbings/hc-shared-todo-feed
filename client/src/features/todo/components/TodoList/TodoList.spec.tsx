@@ -301,10 +301,8 @@ describe("it handles destroying", () => {
 
     test("When I click destroy on the first todo Then it has deleted the first todo", async () => {
       // Check initial state
-      let listItems = screen
-        .getAllByRole("listitem")
-        .filter((li) => li.dataset?.todo_id);
-      expect(listItems.length).toBe(3);
+      let listItems = screen.getAllByRole("listitem");
+      expect(onlyTodos(listItems)).toBe(3);
 
       // Check one item deletion
       waitFor(() => expect(screen.queryByTestId("delete-101")).toBeNull());
@@ -337,10 +335,8 @@ describe("it handles destroying", () => {
 
     test("When I click destroy on the first and third todos Then it has deleted the first and third todos", async () => {
       // Check initial state
-      let listItems = screen
-        .getAllByRole("listitem")
-        .filter((li) => li.dataset?.todo_id);
-      expect(listItems.length).toBe(3);
+      let listItems = screen.getAllByRole("listitem");
+      expect(onlyTodos(listItems)).toBe(3);
 
       const deletedItemNode1 = screen.queryByTestId("delete-101");
       const deletedItemNode3 = screen.queryByTestId("delete-103");
@@ -369,22 +365,23 @@ describe("it handles destroying", () => {
 
     test("When I click clear (destroy all)  Then it has deleted all todos", async () => {
       // Check initial state
-      let listItems = screen
-        .getAllByRole("listitem")
-        .filter((li) => li.dataset?.todo_id);
-      expect(listItems.length).toBe(3);
+      let listItems = screen.getAllByRole("listitem");
+      expect(onlyTodos(listItems)).toBe(3);
 
-      const deletedItemNode1 = screen.queryByTestId("delete-101");
-      const deletedItemNode2 = screen.queryByTestId("delete-102");
-      const deletedItemNode3 = screen.queryByTestId("delete-103");
-
-      waitFor(() => expect(deletedItemNode1).toBeNull());
-      waitFor(() => expect(deletedItemNode2).toBeNull());
-      waitFor(() => expect(deletedItemNode3).toBeNull());
       userEvent.click(screen.getByRole("button", { name: /Clear/i }));
 
-      // expect(listItems.length).toBe(0);
-      // TODO: Figure out how to update the view with callback
+      await waitFor(() =>
+        expect(screen.queryByTestId("delete-101")).toBeNull()
+      );
+      await waitFor(() =>
+        expect(screen.queryByTestId("delete-102")).toBeNull()
+      );
+      await waitFor(() =>
+        expect(screen.queryByTestId("delete-103")).toBeNull()
+      );
+
+      listItems = screen.getAllByRole("listitem");
+      await waitFor(() => expect(onlyTodos(listItems)).toBe(0));
     });
 
     test("And the count is decremented", () => {
@@ -416,23 +413,19 @@ describe("it handles adding an item", () => {
     test("When I type a description and click the 'Add Todo' button Then the list shows 2 items", async () => {
       const textBox = screen.getByPlaceholderText("Add a Todo and press enter");
 
-      userEvent.type(textBox, "Get bread");
-      fireEvent.keyDown(textBox, {
-        key: "Enter",
-      });
-      const listItems = await screen.findAllByRole("listitem");
-      waitFor(() => expect(onlyTodos(listItems)).toBe(2)); //todo
+      userEvent.type(textBox, "Get bread{enter}");
+      const listItems = screen.getAllByRole("listitem");
+      await waitFor(() => expect(onlyTodos(listItems)).toBe(2));
     });
 
-    test("And the 2nd item is the same as what was input", () => {
+    test("And the 2nd item is the same as what was input", async () => {
       const textBox = screen.getByPlaceholderText("Add a Todo and press enter");
 
-      userEvent.type(textBox, "Get bread");
-      fireEvent.keyDown(textBox, {
-        key: "Enter",
-      });
+      userEvent.type(textBox, "Get bread{enter}");
 
-      expect(screen.findByText("Get bread")).toBeInTheDocument();
+      await waitFor(() =>
+        expect(screen.getAllByRole("checkbox")).toHaveLength(2)
+      );
     });
 
     test("And the count is incremented", async () => {
@@ -440,25 +433,19 @@ describe("it handles adding an item", () => {
       expect(count.textContent).toMatch(/1 /);
       const textBox = screen.getByPlaceholderText("Add a Todo and press enter");
 
-      userEvent.type(textBox, "Get bread");
-      fireEvent.keyDown(textBox, {
-        key: "Enter",
-      });
-      waitFor(() => {
+      userEvent.type(textBox, "Get bread{enter}");
+      await waitFor(() => {
         count = screen.getByRole("heading");
-        expect(count.textContent).toMatch(/2 /); //todo ?
+        expect(count.textContent).toMatch(/2 /);
       });
     });
     test("And the input is cleared", async () => {
       const textBox = screen.getByPlaceholderText("Add a Todo and press enter");
 
-      userEvent.type(textBox, "Get bread");
-      fireEvent.keyDown(textBox, {
-        key: "Enter",
-      });
+      userEvent.type(textBox, "Get bread{enter}");
 
-      waitFor(expect(screen.getByDisplayValue("")).toBeInTheDocument());
-      debugger;
+      const newTextBoxVal = screen.getByDisplayValue("");
+      await waitFor(() => expect(newTextBoxVal).toBeInTheDocument());
     });
   });
 });
@@ -507,7 +494,7 @@ describe("it handles filtering", () => {
 // ***  Zome calls to store the data on the DHT ***
 
 describe("it handles saving the entire list", () => {
-  describe("Given a list with 3 todos and a mock zome", () => {
+  describe("Given a list with 3 todos and a mock zome call service", () => {
     var mockHolochainConductor: any;
     const list = {
       id: "1",
@@ -520,7 +507,7 @@ describe("it handles saving the entire list", () => {
 
     beforeAll(() => {
       mockHolochainConductor = new MockConductor("8888");
-      // api.todofeed.update_todo = mockCallZomeFn(mockHolochainConductor);
+      api.todofeed.update_todo = mockCallZomeFn(mockHolochainConductor);
     });
 
     beforeEach(() => {
@@ -539,11 +526,9 @@ describe("it handles saving the entire list", () => {
 
     test("When I click the save button Then it fires a zome function call to add the entry", async () => {
       userEvent.click(screen.getByRole("button", { name: /save/i }));
-      console.log(api.todofeed)
-      api.todofeed.update_todo = []; // mockCallZomeFn(mockHolochainConductor)
-      console.log(api.todofeed)
-      //   // const listItems = await screen.findAllByRole("listitem");
-      //   // expect(onlyTodos(listItems)).toBe(1);
+      console.log(api.todofeed);
+      debugger;
+      expect(api.todofeed.update_todo).toHaveBeenCalledTimes(1);
     });
   });
 });

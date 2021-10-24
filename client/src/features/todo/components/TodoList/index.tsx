@@ -6,13 +6,21 @@ import { Footer } from "./Footer";
 import { store } from "app/store";
 import { useAppDispatch } from "app/hooks";
 import { TodoList, Todo } from "../../types";
-import { createTodo, deleteTodo, updateTodo, updateList } from "../../actions";
+import {
+  createTodo,
+  deleteTodo,
+  updateTodo,
+  createList,
+  createZomeList,
+  updateList,
+} from "../../actions";
 
 interface indexProps {
   list: TodoList;
 }
 
 const index: React.FC<indexProps> = ({ list: { todos, id: listId } }) => {
+  const [hasBeenSaved, setHasBeenSaved] = useState(false);
   const [currentList, setCurrentList] = useState<TodoList>({
     id: listId,
     todos,
@@ -98,9 +106,21 @@ const index: React.FC<indexProps> = ({ list: { todos, id: listId } }) => {
         id: listId,
         todos: currentList.todos.concat([newTodoItem]),
       });
-      // e.target.value = "";
       setNewTodo("");
     }
+  };
+  const handleSaveList = (e: any) => {
+    const uId = `${Math.floor(Math.random() * todos.length * 100)}`;
+    const list = {
+      id: hasBeenSaved ? listId : uId,
+      todos: currentList.todos,
+    };
+    hasBeenSaved
+      ? dispatch(updateList({ list }))
+      : dispatch(createList({ list }));
+
+    dispatch(createZomeList(store.getState()?.cell?.cellIdString, list));
+    debugger;
   };
 
   return (
@@ -133,6 +153,7 @@ const index: React.FC<indexProps> = ({ list: { todos, id: listId } }) => {
         }
         handleFilter={handleFilter}
         handleDestroyAll={handleDestroyAll}
+        handleSaveList={handleSaveList}
       />
     </div>
   );
