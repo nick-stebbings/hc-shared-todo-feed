@@ -10,12 +10,11 @@ interface indexProps {}
 export const App: React.FC<indexProps> = ({}) => {
   const dispatch = useAppDispatch();
   const storedLists = useAppSelector((state: any) => state.todo);
-  const [list, setList] = useState(storedLists);
-  const [listObj, setListObj] = useState(JSON.stringify(list));
+  const [lists, setLists] = useState(storedLists);
+  let [listObj, setListObj] = useState(JSON.stringify(lists));
   useEffect(() => {
     loadTodos().then(() => {
-      setList(storedLists);
-      debugger;
+      setLists(storedLists);
     });
   }, [listObj]);
   const loadTodos = async () => {
@@ -28,16 +27,15 @@ export const App: React.FC<indexProps> = ({}) => {
       ],
     };
     dispatch(createList({ list }));
-    setListObj(JSON.stringify(list));
+    setListObj(JSON.stringify(list)); // for useEffect dependency array
   };
-
   return (
     <div className="App">
       <div style={{ width: "100%", height: "100%", display: "flex" }}>
-        {Object.keys(list)
-          .slice(1)
+        {Object.keys(lists)
+          .slice(1) // Skip the default list
           .map((id, i) => (
-            <TodoList list={list[id]} key={i} />
+            <TodoList list={{ id, todos: lists[id].todos }} key={i} />
           ))}
         <Profiles />
       </div>

@@ -10,7 +10,6 @@ export const getMyAgentProfile = (
   payload: [AgentProfile]
 ): AgentProfile => {
   for (let result of payload) {
-    console.log("result :>> ", result);
     if (agentKey == result.agent_pub_key) return result;
   }
 };

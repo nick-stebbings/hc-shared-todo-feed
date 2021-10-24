@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import { Todo } from "../../types";
 
@@ -14,8 +14,15 @@ export const index: React.FC<indexProps> = ({
   handleToggle,
 }) => {
   const [isComplete, setIsComplete] = useState<boolean>(todo.status);
+  useEffect(() => {
+    setIsComplete(todo.status);
+  }, [todo.status]);
+
   return (
-    <li data-todo_id={todo.id}>
+    <li
+      data-todo_id={todo.id}
+      style={{ textDecoration: isComplete ? "line-through" : "none" }}
+    >
       <label className={isComplete ? "complete" : "incomplete"}>
         {todo.description}
         <input

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1634977502116" clover="3.2.0">
-  <project timestamp="1634977502117" name="All files">
-    <metrics statements="72" coveredstatements="67" conditionals="26" coveredconditionals="19" methods="15" coveredmethods="14" elements="113" coveredelements="100" complexity="0" loc="72" ncloc="72" packages="4" files="5" classes="5"/>
+<coverage generated="1635047869202" clover="3.2.0">
+  <project timestamp="1635047869203" name="All files">
+    <metrics statements="94" coveredstatements="90" conditionals="35" coveredconditionals="27" methods="23" coveredmethods="20" elements="152" coveredelements="137" complexity="0" loc="94" ncloc="94" packages="4" files="7" classes="7"/>
     <package name="app">
-      <metrics statements="9" coveredstatements="9" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+      <metrics statements="15" coveredstatements="12" conditionals="2" coveredconditionals="0" methods="3" coveredmethods="1"/>
       <file name="store.ts" path="/mnt/c/Code/holochain-react-redux-starter/client/src/app/store.ts">
         <metrics statements="9" coveredstatements="9" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
         <line num="1" count="2" type="stmt"/>
@@ -16,9 +16,18 @@
         <line num="12" count="2" type="stmt"/>
         <line num="20" count="2" type="stmt"/>
       </file>
+      <file name="utils.ts" path="/mnt/c/Code/holochain-react-redux-starter/client/src/app/utils.ts">
+        <metrics statements="6" coveredstatements="3" conditionals="2" coveredconditionals="0" methods="2" coveredmethods="0"/>
+        <line num="1" count="2" type="stmt"/>
+        <line num="5" count="2" type="stmt"/>
+        <line num="6" count="0" type="stmt"/>
+        <line num="8" count="2" type="stmt"/>
+        <line num="12" count="0" type="stmt"/>
+        <line num="13" count="0" type="cond" truecount="0" falsecount="2"/>
+      </file>
     </package>
     <package name="features.todo">
-      <metrics statements="36" coveredstatements="35" conditionals="24" coveredconditionals="17" methods="8" coveredmethods="8"/>
+      <metrics statements="35" coveredstatements="34" conditionals="24" coveredconditionals="18" methods="8" coveredmethods="8"/>
       <file name="actions.ts" path="/mnt/c/Code/holochain-react-redux-starter/client/src/features/todo/actions.ts">
         <metrics statements="8" coveredstatements="8" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
         <line num="1" count="2" type="stmt"/>
@@ -31,13 +40,13 @@
         <line num="17" count="2" type="stmt"/>
       </file>
       <file name="reducer.ts" path="/mnt/c/Code/holochain-react-redux-starter/client/src/features/todo/reducer.ts">
-        <metrics statements="28" coveredstatements="27" conditionals="24" coveredconditionals="17" methods="8" coveredmethods="8"/>
+        <metrics statements="27" coveredstatements="26" conditionals="24" coveredconditionals="18" methods="8" coveredmethods="8"/>
         <line num="1" count="2" type="stmt"/>
         <line num="3" count="2" type="stmt"/>
         <line num="5" count="2" type="stmt"/>
         <line num="33" count="2" type="stmt"/>
-        <line num="38" count="16" type="stmt"/>
-        <line num="39" count="16" type="stmt"/>
+        <line num="38" count="27" type="stmt"/>
+        <line num="39" count="27" type="stmt"/>
         <line num="45" count="1" type="stmt"/>
         <line num="48" count="2" type="stmt"/>
         <line num="49" count="2" type="stmt"/>
@@ -45,37 +54,44 @@
         <line num="56" count="3" type="cond" truecount="4" falsecount="2"/>
         <line num="57" count="3" type="cond" truecount="3" falsecount="1"/>
         <line num="59" count="0" type="stmt"/>
-        <line num="63" count="3" type="stmt"/>
-        <line num="65" count="3" type="stmt"/>
-        <line num="66" count="3" type="stmt"/>
-        <line num="67" count="3" type="stmt"/>
-        <line num="69" count="3" type="stmt"/>
-        <line num="72" count="5" type="stmt"/>
-        <line num="75" count="5" type="cond" truecount="2" falsecount="0"/>
-        <line num="77" count="5" type="stmt"/>
-        <line num="79" count="5" type="stmt"/>
-        <line num="80" count="5" type="cond" truecount="4" falsecount="2"/>
-        <line num="81" count="5" type="stmt"/>
-        <line num="85" count="5" type="cond" truecount="1" falsecount="1"/>
-        <line num="86" count="5" type="stmt"/>
-        <line num="87" count="5" type="stmt"/>
-        <line num="92" count="2" type="stmt"/>
+        <line num="63" count="10" type="stmt"/>
+        <line num="64" count="10" type="stmt"/>
+        <line num="65" count="10" type="stmt"/>
+        <line num="66" count="22" type="stmt"/>
+        <line num="68" count="10" type="stmt"/>
+        <line num="71" count="3" type="stmt"/>
+        <line num="73" count="3" type="cond" truecount="2" falsecount="0"/>
+        <line num="75" count="3" type="stmt"/>
+        <line num="77" count="3" type="stmt"/>
+        <line num="78" count="3" type="cond" truecount="4" falsecount="2"/>
+        <line num="79" count="3" type="stmt"/>
+        <line num="83" count="3" type="cond" truecount="2" falsecount="0"/>
+        <line num="84" count="3" type="stmt"/>
+        <line num="89" count="2" type="stmt"/>
       </file>
     </package>
     <package name="features.todo.components.TodoItem">
-      <metrics statements="4" coveredstatements="4" conditionals="2" coveredconditionals="2" methods="1" coveredmethods="1"/>
+      <metrics statements="6" coveredstatements="6" conditionals="4" coveredconditionals="4" methods="2" coveredmethods="2"/>
       <file name="index.tsx" path="/mnt/c/Code/holochain-react-redux-starter/client/src/features/todo/components/TodoItem/index.tsx">
-        <metrics statements="4" coveredstatements="4" conditionals="2" coveredconditionals="2" methods="1" coveredmethods="1"/>
+        <metrics statements="6" coveredstatements="6" conditionals="4" coveredconditionals="4" methods="2" coveredmethods="2"/>
         <line num="1" count="2" type="stmt"/>
         <line num="11" count="2" type="stmt"/>
-        <line num="16" count="31" type="stmt"/>
-        <line num="17" count="31" type="stmt"/>
+        <line num="16" count="79" type="stmt"/>
+        <line num="17" count="79" type="stmt"/>
+        <line num="18" count="58" type="stmt"/>
+        <line num="21" count="79" type="stmt"/>
       </file>
     </package>
     <package name="features.todo.components.TodoList">
-      <metrics statements="23" coveredstatements="19" conditionals="0" coveredconditionals="0" methods="5" coveredmethods="4"/>
+      <metrics statements="38" coveredstatements="38" conditionals="5" coveredconditionals="5" methods="10" coveredmethods="9"/>
+      <file name="Footer.tsx" path="/mnt/c/Code/holochain-react-redux-starter/client/src/features/todo/components/TodoList/Footer.tsx">
+        <metrics statements="3" coveredstatements="3" conditionals="2" coveredconditionals="2" methods="1" coveredmethods="1"/>
+        <line num="1" count="1" type="stmt"/>
+        <line num="9" count="1" type="stmt"/>
+        <line num="14" count="31" type="stmt"/>
+      </file>
       <file name="index.tsx" path="/mnt/c/Code/holochain-react-redux-starter/client/src/features/todo/components/TodoList/index.tsx">
-        <metrics statements="23" coveredstatements="19" conditionals="0" coveredconditionals="0" methods="5" coveredmethods="4"/>
+        <metrics statements="35" coveredstatements="35" conditionals="3" coveredconditionals="3" methods="9" coveredmethods="8"/>
         <line num="1" count="1" type="stmt"/>
         <line num="4" count="1" type="stmt"/>
         <line num="5" count="1" type="stmt"/>
@@ -83,22 +99,34 @@
         <line num="8" count="1" type="stmt"/>
         <line num="9" count="1" type="stmt"/>
         <line num="15" count="1" type="stmt"/>
-        <line num="16" count="8" type="stmt"/>
-        <line num="21" count="8" type="stmt"/>
-        <line num="23" count="8" type="stmt"/>
-        <line num="24" count="2" type="stmt"/>
-        <line num="25" count="2" type="stmt"/>
-        <line num="26" count="2" type="stmt"/>
-        <line num="27" count="2" type="stmt"/>
-        <line num="30" count="8" type="stmt"/>
-        <line num="31" count="0" type="stmt"/>
-        <line num="32" count="0" type="stmt"/>
-        <line num="36" count="0" type="stmt"/>
-        <line num="37" count="0" type="stmt"/>
-        <line num="43" count="8" type="stmt"/>
-        <line num="47" count="24" type="stmt"/>
-        <line num="58" count="24" type="stmt"/>
-        <line num="64" count="1" type="stmt"/>
+        <line num="16" count="31" type="stmt"/>
+        <line num="21" count="31" type="stmt"/>
+        <line num="23" count="31" type="stmt"/>
+        <line num="24" count="3" type="stmt"/>
+        <line num="26" count="1" type="stmt"/>
+        <line num="30" count="1" type="stmt"/>
+        <line num="32" count="1" type="stmt"/>
+        <line num="34" count="3" type="stmt"/>
+        <line num="36" count="1" type="stmt"/>
+        <line num="38" count="1" type="stmt"/>
+        <line num="40" count="3" type="stmt"/>
+        <line num="42" count="1" type="stmt"/>
+        <line num="46" count="31" type="stmt"/>
+        <line num="47" count="1" type="stmt"/>
+        <line num="48" count="1" type="stmt"/>
+        <line num="49" count="1" type="stmt"/>
+        <line num="50" count="1" type="stmt"/>
+        <line num="51" count="1" type="stmt"/>
+        <line num="57" count="31" type="stmt"/>
+        <line num="58" count="7" type="stmt"/>
+        <line num="59" count="7" type="stmt"/>
+        <line num="63" count="7" type="stmt"/>
+        <line num="64" count="7" type="stmt"/>
+        <line num="70" count="31" type="stmt"/>
+        <line num="83" count="31" type="stmt"/>
+        <line num="87" count="71" type="stmt"/>
+        <line num="98" count="71" type="stmt"/>
+        <line num="106" count="1" type="stmt"/>
       </file>
     </package>
   </project>

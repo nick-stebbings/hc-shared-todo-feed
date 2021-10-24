@@ -61,7 +61,6 @@ export const todoSlice = createSlice({
     },
     deleteTodo(state, action: PayloadAction<DeleteTodoPayload>) {
       const { listId, id } = action.payload;
-
       const next = { ...state };
       next[listId]!.todos = state[listId]!.todos.filter(
         (td: Todo) => td.id !== id
@@ -70,7 +69,6 @@ export const todoSlice = createSlice({
     },
     updateTodo(state, action: PayloadAction<UpdateTodoPayload>) {
       const { listId, todoPatch } = action.payload;
-
       const index =
         state[listId] &&
         state[listId].todos.findIndex((todo) => {
@@ -82,8 +80,7 @@ export const todoSlice = createSlice({
         [...state[listId].todos][index] || {},
         todoPatch,
       ]);
-      index && (next[listId].todos = newList);
-      debugger;
+      index !== -1 && (next[listId].todos = newList);
       state = next;
     },
   },

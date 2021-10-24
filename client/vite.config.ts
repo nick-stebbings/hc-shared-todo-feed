@@ -29,7 +29,9 @@ export default defineConfig({
       ],
     }),
   ],
-  optimizeDeps: {
-    exclude: ["eventemitter3"], // <- modules that needs shimming have to be excluded from dep optimization
+  server: {
+    watch: {
+      // usePolling: true,
+    },
   },
 });

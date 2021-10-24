@@ -10,7 +10,6 @@ import { getRequestStatus } from "features/ui/selectors";
 import { getStringId } from "features/cell/selectors";
 
 const mapState = (state: RootState) => {
-  console.log(state);
   return {
     loading: getRequestStatus(state) === "LOADING",
     errorMsg: "ERROR",
