@@ -3,7 +3,7 @@ import { render, screen, waitFor, fireEvent } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
 const MockConductor = require("@holo-host/mock-conductor");
-import { mockCallZomeFn } from "setupTests";
+import { mockCallZomeFn, PORT } from "setupTests";
 import api from "services/zomeApis";
 
 import { createList, deleteList, updateList } from "features/todo/actions";
@@ -224,6 +224,20 @@ describe("it renders <TodoList>", () => {
     expect(saveButton.nodeName).toBe("BUTTON");
   });
 
+  test("it renders a save button only when the list has items", async () => {
+    const list = {
+      id: "1",
+      todos: [{ id: "101", description: "Get milk", status: false }],
+    };
+    const { getByText, getByTestId } = renderUI({ list });
+    let saveButton = getByText(/save/i);
+    expect(saveButton).toBeInTheDocument();
+
+    userEvent.click(getByTestId("delete-101"));
+
+    await waitFor(() => expect(saveButton).not.toBeInTheDocument());
+  });
+
   test("it renders a text input", () => {
     const list = {
       id: "1",
@@ -260,7 +274,7 @@ describe("it handles toggling", () => {
       expect(unchecked.length).toBe(2);
       expect(checked.length).toBe(1);
 
-      fireEvent(screen.getByTestId("toggle-101"), new MouseEvent("click"));
+      userEvent.click(screen.getByTestId("toggle-101"));
 
       unchecked = screen.getAllByRole("checkbox", { checked: false });
       checked = screen.getAllByRole("checkbox", { checked: true });
@@ -494,7 +508,7 @@ describe("it handles filtering", () => {
 // ***  Zome calls to store the data on the DHT ***
 
 describe("it handles saving the entire list", () => {
-  describe("Given a list with 3 todos and a mock zome call service", () => {
+  describe("Given an non-persisted list with 3 todos and a mock zome call service", () => {
     var mockHolochainConductor: any;
     const list = {
       id: "1",
@@ -506,14 +520,17 @@ describe("it handles saving the entire list", () => {
     };
 
     beforeAll(() => {
-      mockHolochainConductor = new MockConductor("8888");
-      api.todofeed.update_todo = mockCallZomeFn(mockHolochainConductor);
+      mockHolochainConductor = new MockConductor(PORT);
+      api.todofeed["create_todolist"].create = mockCallZomeFn(
+        mockHolochainConductor
+      );
     });
 
     beforeEach(() => {
       store.dispatch(createList({ list }));
       renderUI({
         list,
+        hasBeenPersisted: false,
       });
     });
 
@@ -526,9 +543,48 @@ describe("it handles saving the entire list", () => {
 
     test("When I click the save button Then it fires a zome function call to add the entry", async () => {
       userEvent.click(screen.getByRole("button", { name: /save/i }));
-      console.log(api.todofeed);
-      debugger;
-      expect(api.todofeed.update_todo).toHaveBeenCalledTimes(1);
+
+      expect(api.todofeed.create_todolist.create).toHaveBeenCalledTimes(1); // I.e. an action was created
+    });
+  });
+
+  describe("Given a persisted list with 3 todos and a mock zome call service", () => {
+    var mockHolochainConductor: any;
+    const list = {
+      id: "1",
+      todos: [
+        { id: "101", description: "Get milk", status: false },
+        { id: "102", description: "Get bread", status: false },
+        { id: "103", description: "Pick up mail", status: true },
+      ],
+    };
+
+    beforeAll(() => {
+      mockHolochainConductor = new MockConductor(PORT);
+      api.todofeed["update_todolist"].create = mockCallZomeFn(
+        mockHolochainConductor
+      );
+    });
+
+    beforeEach(() => {
+      store.dispatch(createList({ list }));
+      renderUI({
+        list,
+        hasBeenPersisted: true,
+      });
+    });
+
+    afterEach(() => {
+      mockHolochainConductor.clearResponses();
+      return mockHolochainConductor.closeApps();
+    });
+
+    afterAll(() => mockHolochainConductor.close());
+
+    test("When I click the save button Then it fires a zome function call to add an update entry", async () => {
+      userEvent.click(screen.getByRole("button", { name: /save/i }));
+
+      expect(api.todofeed.update_todolist.create).toHaveBeenCalledTimes(1); // I.e. an action was created
     });
   });
 });

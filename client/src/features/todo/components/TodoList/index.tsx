@@ -11,16 +11,21 @@ import {
   deleteTodo,
   updateTodo,
   createList,
-  createZomeList,
+  createTodoListZome,
+  updateTodoListZome,
   updateList,
 } from "../../actions";
 
 interface indexProps {
   list: TodoList;
+  hasBeenPersisted?: boolean;
 }
 
-const index: React.FC<indexProps> = ({ list: { todos, id: listId } }) => {
-  const [hasBeenSaved, setHasBeenSaved] = useState(false);
+const index: React.FC<indexProps> = ({
+  list: { todos, id: listId },
+  hasBeenPersisted,
+}) => {
+  const [hasBeenSaved, setHasBeenSaved] = useState(hasBeenPersisted || false);
   const [currentList, setCurrentList] = useState<TodoList>({
     id: listId,
     todos,
@@ -30,23 +35,24 @@ const index: React.FC<indexProps> = ({ list: { todos, id: listId } }) => {
   const dispatch = useAppDispatch();
 
   const handleFilter = (e: any) => {
+    const storedTodos = store.getState().todo[listId].todos;
     switch (e.target.textContent) {
       case "All":
         setCurrentList({
           id: listId,
-          todos,
+          todos: storedTodos,
         });
         return;
       case "Active":
         setCurrentList({
           id: listId,
-          todos: todos.filter((td) => td.status == false),
+          todos: storedTodos.filter((td) => td.status == false),
         });
         return;
       case "Completed":
         setCurrentList({
           id: listId,
-          todos: todos.filter((td) => td.status == true),
+          todos: storedTodos.filter((td) => td.status == true),
         });
         return;
     }
@@ -115,12 +121,18 @@ const index: React.FC<indexProps> = ({ list: { todos, id: listId } }) => {
       id: hasBeenSaved ? listId : uId,
       todos: currentList.todos,
     };
-    hasBeenSaved
-      ? dispatch(updateList({ list }))
-      : dispatch(createList({ list }));
+    const cellIdString = store.getState()?.cell?.cellIdString;
 
-    dispatch(createZomeList(store.getState()?.cell?.cellIdString, list));
-    debugger;
+    try {
+      hasBeenSaved
+        ? dispatch(updateList({ list })) &&
+          dispatch(updateTodoListZome(cellIdString, list))
+        : dispatch(createList({ list })) &&
+          dispatch(createTodoListZome(cellIdString, list));
+      setHasBeenSaved(true);
+    } catch (err) {
+      console.log("err :>> ", err);
+    }
   };
 
   return (
@@ -151,6 +163,7 @@ const index: React.FC<indexProps> = ({ list: { todos, id: listId } }) => {
           currentList.todos.length -
           currentList.todos.filter((td: Todo) => td.status).length
         }
+        listLength={currentList.todos.length}
         handleFilter={handleFilter}
         handleDestroyAll={handleDestroyAll}
         handleSaveList={handleSaveList}

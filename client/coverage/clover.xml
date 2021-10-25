@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1635068989801" clover="3.2.0">
-  <project timestamp="1635068989802" name="All files">
-    <metrics statements="123" coveredstatements="121" conditionals="51" coveredconditionals="41" methods="25" coveredmethods="25" elements="199" coveredelements="187" complexity="0" loc="123" ncloc="123" packages="4" files="6" classes="6"/>
+<coverage generated="1635128746492" clover="3.2.0">
+  <project timestamp="1635128746494" name="All files">
+    <metrics statements="133" coveredstatements="131" conditionals="59" coveredconditionals="51" methods="27" coveredmethods="26" elements="219" coveredelements="208" complexity="0" loc="133" ncloc="133" packages="4" files="6" classes="6"/>
     <package name="app">
       <metrics statements="9" coveredstatements="9" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
       <file name="store.ts" path="/mnt/c/Code/holochain-react-redux-starter/client/src/app/store.ts">
@@ -18,22 +18,28 @@
       </file>
     </package>
     <package name="features.todo">
-      <metrics statements="40" coveredstatements="39" conditionals="24" coveredconditionals="18" methods="9" coveredmethods="9"/>
+      <metrics statements="46" coveredstatements="45" conditionals="24" coveredconditionals="18" methods="11" coveredmethods="10"/>
       <file name="actions.ts" path="/mnt/c/Code/holochain-react-redux-starter/client/src/features/todo/actions.ts">
-        <metrics statements="13" coveredstatements="13" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
-        <line num="2" count="2" type="stmt"/>
-        <line num="3" count="2" type="stmt"/>
+        <metrics statements="19" coveredstatements="19" conditionals="0" coveredconditionals="0" methods="3" coveredmethods="2"/>
+        <line num="1" count="2" type="stmt"/>
+        <line num="4" count="2" type="stmt"/>
         <line num="12" count="2" type="stmt"/>
         <line num="14" count="2" type="stmt"/>
-        <line num="19" count="2" type="stmt"/>
-        <line num="20" count="1" type="stmt"/>
-        <line num="26" count="2" type="stmt"/>
-        <line num="27" count="2" type="stmt"/>
-        <line num="28" count="2" type="stmt"/>
-        <line num="29" count="2" type="stmt"/>
+        <line num="15" count="2" type="stmt"/>
+        <line num="16" count="2" type="stmt"/>
+        <line num="17" count="2" type="stmt"/>
+        <line num="18" count="1" type="stmt"/>
+        <line num="23" count="2" type="stmt"/>
+        <line num="24" count="1" type="stmt"/>
         <line num="30" count="2" type="stmt"/>
         <line num="31" count="2" type="stmt"/>
         <line num="32" count="2" type="stmt"/>
+        <line num="33" count="2" type="stmt"/>
+        <line num="34" count="2" type="stmt"/>
+        <line num="35" count="2" type="stmt"/>
+        <line num="36" count="2" type="stmt"/>
+        <line num="37" count="2" type="stmt"/>
+        <line num="38" count="2" type="stmt"/>
       </file>
       <file name="reducer.ts" path="/mnt/c/Code/holochain-react-redux-starter/client/src/features/todo/reducer.ts">
         <metrics statements="27" coveredstatements="26" conditionals="24" coveredconditionals="18" methods="8" coveredmethods="8"/>
@@ -41,118 +47,122 @@
         <line num="3" count="2" type="stmt"/>
         <line num="5" count="2" type="stmt"/>
         <line num="33" count="2" type="stmt"/>
-        <line num="38" count="31" type="stmt"/>
-        <line num="39" count="31" type="stmt"/>
+        <line num="38" count="32" type="stmt"/>
+        <line num="39" count="32" type="stmt"/>
         <line num="45" count="1" type="stmt"/>
-        <line num="48" count="4" type="stmt"/>
-        <line num="49" count="4" type="stmt"/>
+        <line num="48" count="5" type="stmt"/>
+        <line num="49" count="5" type="stmt"/>
         <line num="55" count="7" type="stmt"/>
         <line num="56" count="7" type="cond" truecount="4" falsecount="2"/>
         <line num="57" count="7" type="cond" truecount="3" falsecount="1"/>
         <line num="59" count="0" type="stmt"/>
-        <line num="63" count="10" type="stmt"/>
-        <line num="64" count="10" type="stmt"/>
-        <line num="65" count="10" type="stmt"/>
-        <line num="66" count="22" type="stmt"/>
-        <line num="68" count="10" type="stmt"/>
-        <line num="71" count="3" type="stmt"/>
-        <line num="73" count="3" type="cond" truecount="2" falsecount="0"/>
-        <line num="75" count="3" type="stmt"/>
-        <line num="77" count="3" type="stmt"/>
-        <line num="78" count="3" type="cond" truecount="4" falsecount="2"/>
-        <line num="79" count="3" type="stmt"/>
-        <line num="83" count="3" type="cond" truecount="2" falsecount="0"/>
-        <line num="84" count="3" type="stmt"/>
+        <line num="63" count="11" type="stmt"/>
+        <line num="64" count="11" type="stmt"/>
+        <line num="65" count="11" type="stmt"/>
+        <line num="66" count="25" type="stmt"/>
+        <line num="68" count="11" type="stmt"/>
+        <line num="71" count="4" type="stmt"/>
+        <line num="73" count="4" type="cond" truecount="2" falsecount="0"/>
+        <line num="75" count="4" type="stmt"/>
+        <line num="77" count="4" type="stmt"/>
+        <line num="78" count="4" type="cond" truecount="4" falsecount="2"/>
+        <line num="79" count="4" type="stmt"/>
+        <line num="83" count="4" type="cond" truecount="2" falsecount="0"/>
+        <line num="84" count="4" type="stmt"/>
         <line num="89" count="2" type="stmt"/>
       </file>
     </package>
     <package name="features.todo.components.TodoList">
-      <metrics statements="57" coveredstatements="56" conditionals="19" coveredconditionals="15" methods="13" coveredmethods="13"/>
+      <metrics statements="60" coveredstatements="59" conditionals="27" coveredconditionals="25" methods="13" coveredmethods="13"/>
       <file name="Footer.tsx" path="/mnt/c/Code/holochain-react-redux-starter/client/src/features/todo/components/TodoList/Footer.tsx">
-        <metrics statements="3" coveredstatements="3" conditionals="2" coveredconditionals="2" methods="1" coveredmethods="1"/>
+        <metrics statements="3" coveredstatements="3" conditionals="4" coveredconditionals="4" methods="1" coveredmethods="1"/>
         <line num="1" count="1" type="stmt"/>
-        <line num="10" count="1" type="stmt"/>
-        <line num="16" count="77" type="stmt"/>
+        <line num="11" count="1" type="stmt"/>
+        <line num="18" count="82" type="stmt"/>
       </file>
       <file name="index.tsx" path="/mnt/c/Code/holochain-react-redux-starter/client/src/features/todo/components/TodoList/index.tsx">
-        <metrics statements="54" coveredstatements="53" conditionals="17" coveredconditionals="13" methods="12" coveredmethods="12"/>
+        <metrics statements="57" coveredstatements="56" conditionals="23" coveredconditionals="21" methods="12" coveredmethods="12"/>
         <line num="1" count="1" type="stmt"/>
         <line num="3" count="1" type="stmt"/>
         <line num="4" count="1" type="stmt"/>
         <line num="6" count="1" type="stmt"/>
         <line num="7" count="1" type="stmt"/>
         <line num="9" count="1" type="stmt"/>
-        <line num="22" count="1" type="stmt"/>
-        <line num="23" count="77" type="stmt"/>
-        <line num="24" count="77" type="stmt"/>
-        <line num="28" count="77" type="stmt"/>
-        <line num="30" count="77" type="stmt"/>
-        <line num="32" count="77" type="stmt"/>
-        <line num="33" count="3" type="cond" truecount="3" falsecount="0"/>
-        <line num="35" count="1" type="stmt"/>
-        <line num="39" count="1" type="stmt"/>
+        <line num="24" count="1" type="stmt"/>
+        <line num="28" count="82" type="cond" truecount="2" falsecount="0"/>
+        <line num="29" count="82" type="stmt"/>
+        <line num="33" count="82" type="stmt"/>
+        <line num="35" count="82" type="stmt"/>
+        <line num="37" count="82" type="stmt"/>
+        <line num="38" count="3" type="stmt"/>
+        <line num="39" count="3" type="cond" truecount="3" falsecount="0"/>
         <line num="41" count="1" type="stmt"/>
-        <line num="43" count="3" type="stmt"/>
         <line num="45" count="1" type="stmt"/>
         <line num="47" count="1" type="stmt"/>
         <line num="49" count="3" type="stmt"/>
         <line num="51" count="1" type="stmt"/>
-        <line num="55" count="77" type="stmt"/>
-        <line num="56" count="1" type="stmt"/>
+        <line num="53" count="1" type="stmt"/>
+        <line num="55" count="3" type="stmt"/>
         <line num="57" count="1" type="stmt"/>
-        <line num="58" count="1" type="stmt"/>
-        <line num="59" count="1" type="stmt"/>
-        <line num="60" count="1" type="stmt"/>
-        <line num="66" count="77" type="stmt"/>
-        <line num="67" count="7" type="stmt"/>
-        <line num="68" count="7" type="stmt"/>
-        <line num="72" count="7" type="stmt"/>
-        <line num="73" count="7" type="stmt"/>
-        <line num="79" count="77" type="stmt"/>
-        <line num="80" count="2" type="stmt"/>
-        <line num="84" count="2" type="stmt"/>
-        <line num="85" count="2" type="stmt"/>
+        <line num="61" count="82" type="stmt"/>
+        <line num="62" count="2" type="stmt"/>
+        <line num="63" count="2" type="stmt"/>
+        <line num="64" count="2" type="stmt"/>
+        <line num="65" count="2" type="stmt"/>
+        <line num="66" count="2" type="stmt"/>
+        <line num="72" count="82" type="stmt"/>
+        <line num="73" count="8" type="stmt"/>
+        <line num="74" count="8" type="stmt"/>
+        <line num="78" count="8" type="stmt"/>
+        <line num="79" count="8" type="stmt"/>
+        <line num="85" count="82" type="stmt"/>
         <line num="86" count="2" type="stmt"/>
-        <line num="92" count="77" type="stmt"/>
-        <line num="93" count="40" type="cond" truecount="2" falsecount="0"/>
-        <line num="94" count="4" type="stmt"/>
-        <line num="99" count="4" type="stmt"/>
+        <line num="90" count="2" type="stmt"/>
+        <line num="91" count="2" type="stmt"/>
+        <line num="92" count="2" type="stmt"/>
+        <line num="98" count="82" type="stmt"/>
+        <line num="99" count="40" type="cond" truecount="2" falsecount="0"/>
+        <line num="100" count="4" type="stmt"/>
         <line num="105" count="4" type="stmt"/>
-        <line num="109" count="4" type="stmt"/>
-        <line num="112" count="77" type="stmt"/>
-        <line num="113" count="1" type="stmt"/>
-        <line num="114" count="1" type="stmt"/>
-        <line num="118" count="1" type="cond" truecount="1" falsecount="1"/>
-        <line num="122" count="1" type="cond" truecount="6" falsecount="2"/>
-        <line num="123" count="0" type="stmt"/>
-        <line num="126" count="77" type="stmt"/>
-        <line num="132" count="36" type="stmt"/>
-        <line num="139" count="127" type="stmt"/>
-        <line num="152" count="127" type="stmt"/>
-        <line num="162" count="1" type="stmt"/>
+        <line num="111" count="4" type="stmt"/>
+        <line num="115" count="4" type="stmt"/>
+        <line num="118" count="82" type="stmt"/>
+        <line num="119" count="2" type="stmt"/>
+        <line num="120" count="2" type="stmt"/>
+        <line num="124" count="2" type="cond" truecount="6" falsecount="2"/>
+        <line num="126" count="2" type="stmt"/>
+        <line num="127" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="132" count="2" type="stmt"/>
+        <line num="134" count="0" type="stmt"/>
+        <line num="138" count="82" type="stmt"/>
+        <line num="144" count="36" type="stmt"/>
+        <line num="151" count="140" type="stmt"/>
+        <line num="164" count="140" type="stmt"/>
+        <line num="175" count="1" type="stmt"/>
       </file>
     </package>
     <package name="services">
-      <metrics statements="17" coveredstatements="17" conditionals="8" coveredconditionals="8" methods="2" coveredmethods="2"/>
+      <metrics statements="18" coveredstatements="18" conditionals="8" coveredconditionals="8" methods="2" coveredmethods="2"/>
       <file name="zomeApis.ts" path="/mnt/c/Code/holochain-react-redux-starter/client/src/services/zomeApis.ts">
-        <metrics statements="17" coveredstatements="17" conditionals="8" coveredconditionals="8" methods="2" coveredmethods="2"/>
-        <line num="4" count="1" type="stmt"/>
-        <line num="12" count="1" type="cond" truecount="2" falsecount="0"/>
-        <line num="13" count="1" type="stmt"/>
-        <line num="14" count="1" type="stmt"/>
-        <line num="15" count="1" type="stmt"/>
-        <line num="16" count="1" type="stmt"/>
-        <line num="17" count="1" type="stmt"/>
-        <line num="20" count="1" type="cond" truecount="2" falsecount="0"/>
-        <line num="21" count="1" type="stmt"/>
-        <line num="24" count="1" type="stmt"/>
-        <line num="26" count="1" type="stmt"/>
-        <line num="27" count="10" type="cond" truecount="2" falsecount="0"/>
-        <line num="28" count="5" type="stmt"/>
-        <line num="35" count="1" type="stmt"/>
-        <line num="36" count="2" type="cond" truecount="2" falsecount="0"/>
-        <line num="37" count="1" type="stmt"/>
-        <line num="44" count="1" type="stmt"/>
+        <metrics statements="18" coveredstatements="18" conditionals="8" coveredconditionals="8" methods="2" coveredmethods="2"/>
+        <line num="4" count="2" type="stmt"/>
+        <line num="12" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="13" count="2" type="stmt"/>
+        <line num="14" count="2" type="stmt"/>
+        <line num="17" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="18" count="2" type="stmt"/>
+        <line num="19" count="2" type="stmt"/>
+        <line num="20" count="2" type="stmt"/>
+        <line num="21" count="2" type="stmt"/>
+        <line num="22" count="2" type="stmt"/>
+        <line num="25" count="2" type="stmt"/>
+        <line num="27" count="2" type="stmt"/>
+        <line num="28" count="20" type="cond" truecount="2" falsecount="0"/>
+        <line num="29" count="10" type="stmt"/>
+        <line num="36" count="2" type="stmt"/>
+        <line num="37" count="8" type="cond" truecount="2" falsecount="0"/>
+        <line num="38" count="4" type="stmt"/>
+        <line num="45" count="2" type="stmt"/>
       </file>
     </package>
   </project>

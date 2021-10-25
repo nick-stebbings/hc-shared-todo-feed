@@ -1,7 +1,7 @@
+import zomeApis, { TodoFeedZomeActionStrings } from "services/zomeApis";
+
 import { TodoList } from "./types";
 import { todoSlice } from "./reducer";
-import { createZomeCallAsyncAction } from "services/redux-middleware";
-
 const {
   createList,
   deleteList,
@@ -11,22 +11,28 @@ const {
   updateTodo,
 } = todoSlice.actions;
 
-const createZomeListActionCreator = createZomeCallAsyncAction(
-  "instafeed",
-  "create_list"
-);
+console.log("TodoFeedZomeActionStrings :>> ", TodoFeedZomeActionStrings);
+console.log("TodoFeedZomeActionStrings :>> ", TodoFeedZomeActionStrings["0"]);
+console.log("zomeApis :>> ", zomeApis);
+const createTodoListZome = (cellIdString: string, list: TodoList) =>
+  zomeApis.todofeed[TodoFeedZomeActionStrings["0"]].create({
+    cellIdString,
+    list,
+  });
 
-const createZomeList = (cellIdString: string, list: TodoList) =>
-  createZomeListActionCreator.create({
+const updateTodoListZome = (cellIdString: string, list: TodoList) =>
+  zomeApis.todofeed[TodoFeedZomeActionStrings["1"]].create({
     cellIdString,
     list,
   });
 
 export {
+  TodoFeedZomeActionStrings,
   createList,
-  createZomeList,
+  createTodoListZome,
   deleteList,
   updateList,
+  updateTodoListZome,
   createTodo,
   deleteTodo,
   updateTodo,

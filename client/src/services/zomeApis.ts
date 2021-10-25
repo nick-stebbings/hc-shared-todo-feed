@@ -9,16 +9,17 @@ interface APIs {
   todofeed: object;
 }
 
-enum userProfilesActionStrings {
+export enum TodoFeedZomeActionStrings {
+  "create_todolist",
+  "update_todolist",
+}
+
+export enum userProfilesActionStrings {
   "create_profile",
   "get_all_profiles",
   "get_my_profile",
   "get_agent_profile",
   "search_profiles",
-}
-
-enum todoFeedActionStrings {
-  "update_todolist",
 }
 
 const apis: APIs = { profiles: {}, todofeed: {} };
@@ -32,10 +33,10 @@ for (const zomeFunctionName in userProfilesActionStrings) {
   }
 }
 
-for (const zomeFunctionName in todoFeedActionStrings) {
+for (const zomeFunctionName in TodoFeedZomeActionStrings) {
   if (isNaN(+zomeFunctionName)) {
     apis.todofeed[zomeFunctionName] = createZomeCallAsyncAction(
-      "instafeed",
+      "instafeed", // TODO rename this
       zomeFunctionName
     );
   }

@@ -2,6 +2,7 @@ import React from "react";
 
 interface FooterProps {
   count: number;
+  listLength: number;
   handleFilter?: (ev: any, setList: any) => void;
   handleDestroyAll?: (ev: any) => void;
   handleSaveList?: (ev: any) => void;
@@ -9,6 +10,7 @@ interface FooterProps {
 
 export const Footer: React.FC<FooterProps> = ({
   count,
+  listLength,
   handleFilter,
   handleDestroyAll,
   handleSaveList,
@@ -32,9 +34,11 @@ export const Footer: React.FC<FooterProps> = ({
         Clear
       </button>
 
-      <button name="save" className="save-list" onClick={handleSaveList}>
-        Save
-      </button>
+      {listLength > 0 && (
+        <button name="save" className="save-list" onClick={handleSaveList}>
+          Save
+        </button>
+      )}
     </footer>
   );
 };
