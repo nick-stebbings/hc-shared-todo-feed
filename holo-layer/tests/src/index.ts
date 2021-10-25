@@ -12,9 +12,9 @@ orchestrator.run();
 // require("./progenitor")(orchestrator);
 // orchestrator.run();
 
-// orchestrator = new Orchestrator();
-// require("./schema-tests")(orchestrator);
-// orchestrator.run();
+orchestrator = new Orchestrator();
+require("./todo_entry")(orchestrator);
+orchestrator.run();
 
 // orchestrator = new Orchestrator();
 // require("./test2agents")(orchestrator);
