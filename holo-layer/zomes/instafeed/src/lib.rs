@@ -1,8 +1,8 @@
+use hdk::prelude::holo_hash::EntryHashB64;
 use hdk::prelude::*;
-use crate::entries::todo::TodoList;
-// use crate::entries::todo::TodoListDTO;
 use crate::helpers::progenitor::DnaProperties;
-use holo_hash::EntryHashB64;
+use crate::entries::todo::TodoList;
+use crate::entries::todo::TodoListDTO;
 mod helpers;
 mod entries;
 
@@ -14,7 +14,7 @@ pub fn who_am_i(_: ()) -> ExternResult<AgentPubKey> {
 }
 
 #[hdk_extern]
-pub fn get_dna_properties(_: ()) -> ExternResult<DnaProperties> {
+pub fn get_dna_properties(_: ()) -> ExternResult<ZomeInfo> {
     DnaProperties::get()
 }
 
@@ -24,11 +24,11 @@ pub fn am_i_developer(_: ()) -> ExternResult<bool> {
 }
 
 #[hdk_extern]
-pub fn create_todolist(input: TodoList) -> ExternResult<EntryHashB64> {
-    unimplemented!();
+pub fn create_todolist(input: TodoListDTO) -> ExternResult<EntryHashB64> {
+    entries::todo::create_todolist(input)
 }
 
 #[hdk_extern]
-pub fn update_todolist(input: TodoList) -> ExternResult<EntryHashB64> {
+pub fn update_todolist(_input: TodoList) -> ExternResult<EntryHashB64> {
     unimplemented!();
 }

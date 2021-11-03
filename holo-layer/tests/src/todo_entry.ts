@@ -34,15 +34,23 @@ module.exports = async (orchestrator) => {
     await sleep(10);
 
     const todolist2 = {
-      id: "2",
+      id: "",
       todos: ["1", "2", "3"],
     };
-    let create_todolist_result_alice_2 = await alice.call(
-      Zome_Name,
-      zome_function.create_todolist,
-      todolist2
-    );
-    t.ok(create_todolist_result_alice_2);
+
+    try {
+      let create_todolist_result_alice_2 = await alice.call(
+        Zome_Name,
+        zome_function.create_todolist,
+        todolist2
+      );
+      t.fail();
+    } catch (e) {
+      t.deepEqual(
+        e?.data?.data,
+        'Wasm error while working with Ribosome: Guest("Id can not be null or empty")'
+      );
+    }
 
     await sleep(10);
   });
