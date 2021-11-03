@@ -29,6 +29,16 @@ pub fn create_todolist(input: TodoListDTO) -> ExternResult<EntryHashB64> {
 }
 
 #[hdk_extern]
+pub fn get_todolist_element(_input: TodoList) -> ExternResult<EntryHashB64> {
+    unimplemented!();
+}
+
+#[hdk_extern]
+pub fn get_all_todolists(_input: TodoList) -> ExternResult<EntryHashB64> {
+    unimplemented!();
+}
+
+#[hdk_extern]
 pub fn update_todolist(_input: TodoList) -> ExternResult<EntryHashB64> {
     unimplemented!();
 }

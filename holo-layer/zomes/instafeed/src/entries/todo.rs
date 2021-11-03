@@ -12,6 +12,7 @@ impl TodoList {
   pub fn new(id: &str) -> Self {
         TodoList {
             id: id.trim().to_string().clone(),
+            // todos: id.trim().to_string().clone(),
         }
   }
 }
