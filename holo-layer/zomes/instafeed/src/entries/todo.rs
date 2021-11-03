@@ -1,26 +1,32 @@
 use hdk::prelude::*;
 use holo_hash::EntryHashB64;
 pub mod anchors;
+use std::collections::BTreeMap;
+
+pub fn err(reason: &str) -> WasmError {
+    WasmError::Guest(String::from(reason))
+}
 
 #[hdk_entry(id="todolist", visibility="public")]
 #[derive(Clone)]
 pub struct TodoList {
     pub id: String,
+    pub todos: BTreeMap<String, String>,
 }
 
 impl TodoList {
-  pub fn new(id: &str) -> Self {
+    pub fn new(id: &str, todos:BTreeMap<String,String>) -> Self {
         TodoList {
             id: id.trim().to_string().clone(),
-            // todos: id.trim().to_string().clone(),
+            todos: todos,
         }
-  }
+    }
 }
 
 #[derive(Clone, Serialize, Deserialize, Debug, SerializedBytes)]
 pub struct TodoListDTO {
     pub id: String,
-    // pub todos: Vec<&'static str>
+    pub todos: BTreeMap<String, String>,
 }
 
 impl TodoListDTO {
@@ -32,6 +38,10 @@ impl TodoListDTO {
             msgs.push("Id can not be null or empty".to_string());
             result = false;
         }
+        if self.todos.is_empty() {
+            msgs.push("Todos can not be null or empty".to_string());
+            result = false;
+        }
 
         if result == false {
             return Err(msgs.join("\r"));
@@ -41,12 +51,23 @@ impl TodoListDTO {
     }
 }
 
+pub fn get_todolist(input: TodoListDTO) -> ExternResult<TodoList> {
+    let hash: EntryHash = hash_entry(TodoList::new(&input.id, input.todos.clone()))?;
+    println!("TDL: {:?}", TodoList::new(&input.id, input.todos.clone()));
+    println!("HASH: {:?}", hash);
+    let element: Element = get(EntryHash::from(hash), GetOptions::default())?.ok_or(err("Can't find a list with that content"))?;
+    
+    let option: Option<TodoList> = element.entry().to_app_option()?;
+    let todolist = option.ok_or(err("No Todolist in Option"))?;
+    Ok(todolist)
+}
+
 pub fn create_todolist(input: TodoListDTO) -> ExternResult<EntryHashB64> {
     if let Err(e) = input.validate() {
         return Err(WasmError::Guest(e));
     }
 
-    let new_todolist = TodoList::new(&input.id);
+    let new_todolist = TodoList::new(&input.id, input.todos);
     let _todolist_header_hash = create_entry(new_todolist.clone())?;
 
     let entry_hash = hash_entry(new_todolist.clone())?;
@@ -61,4 +82,36 @@ pub fn create_todolist(input: TodoListDTO) -> ExternResult<EntryHashB64> {
 
     let todolist_entry_hash = hash_entry(new_todolist)?;
     Ok(EntryHashB64::from(todolist_entry_hash))
+}
+
+#[derive(Clone, Serialize, Deserialize, Debug, SerializedBytes)]
+pub struct AllTodoListDTO {
+    pub id: String,
+    pub todos: BTreeMap<String, String>,
+    pub entry_hash: EntryHashB64
+}
+
+pub fn get_all_todolists () -> ExternResult<Vec<AllTodoListDTO>> {
+    let all_todolists_anchor: EntryHash = anchors::get_all_todolists_anchor_entry()?;
+    let mut all_todolists_dto: Vec<AllTodoListDTO> = Vec::new();
+    let linked_todolists: Vec<Link> = get_links(all_todolists_anchor, Some(LinkTag::new(anchors::ALL_TODOLIST_ANCHOR)))?;
+
+    for link in linked_todolists.into_iter() {
+        match get(link.target.clone(), GetOptions::content())? {
+            Some(element) => {
+                let entry: Option<TodoList> = element.entry().to_app_option()?;
+
+                match entry {
+                    Some(todolist) => {
+                        all_todolists_dto.push(AllTodoListDTO { id: todolist.id, todos: todolist.todos,
+                        entry_hash: EntryHashB64::from(link.target) });
+                    }
+                    None => {}
+                }
+            }
+            
+                    None => {}
+        }
+    }
+    Ok(all_todolists_dto)
 }

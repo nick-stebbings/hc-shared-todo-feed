@@ -3,6 +3,7 @@ use hdk::prelude::*;
 use crate::helpers::progenitor::DnaProperties;
 use crate::entries::todo::TodoList;
 use crate::entries::todo::TodoListDTO;
+use crate::entries::todo::AllTodoListDTO;
 mod helpers;
 mod entries;
 
@@ -29,13 +30,13 @@ pub fn create_todolist(input: TodoListDTO) -> ExternResult<EntryHashB64> {
 }
 
 #[hdk_extern]
-pub fn get_todolist_element(_input: TodoList) -> ExternResult<EntryHashB64> {
-    unimplemented!();
+pub fn get_todolist(input: TodoListDTO) -> ExternResult<TodoList> {
+    entries::todo::get_todolist(input)
 }
 
 #[hdk_extern]
-pub fn get_all_todolists(_input: TodoList) -> ExternResult<EntryHashB64> {
-    unimplemented!();
+pub fn get_all_todolists(_input: TodoList) -> ExternResult<Vec<AllTodoListDTO>> {
+    entries::todo::get_all_todolists()
 }
 
 #[hdk_extern]
