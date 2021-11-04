@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Profile as ProfileType } from "../../types";
 
 type ProfileDetailsProps = {
@@ -16,12 +16,13 @@ export const ProfileCard: React.FunctionComponent<ProfileDetailsProps> = ({
 }) => {
   const noUserExists = !userProfile?.fields?.avatar;
   const handleChange = (e: any) => {
-    setUserProfile({ nickname: e.target.value });
+    setUserProfile &&
+      setUserProfile({ nickname: e.target.value, fields: { avatar: "" } });
   };
 
   return (
     <div>
-      {noUserExists && handleSubmit ? (
+      {noUserExists ? (
         <form>
           <label htmlFor="user-nickname">Nickname:</label>
           <input

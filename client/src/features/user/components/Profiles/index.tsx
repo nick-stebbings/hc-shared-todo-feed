@@ -11,36 +11,49 @@ import { OtherProfiles } from "./OtherProfiles";
 
 export const Profiles: React.FunctionComponent<{}> = () => {
   const dispatch = useAppDispatch();
+  const cellIdString = store.getState()?.cell?.cellIdString;
   const loadingState = useAppSelector(getRequestStatus);
+  const [isValidForm, setIsValidForm] = useState<boolean>(true);
+  const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
+
   const [userProfile, setUserProfile] = useState<ProfileType>(
     store.getState()?.user?.myProfile
   );
   const [otherUserProfiles, setOtherUserProfiles] = useState<[ProfileType?]>(
     []
   );
-  const [isValidForm, setIsValidForm] = useState<boolean>(false);
+
+  const fetchOtherProfiles = async () => dispatch(fetchProfiles(cellIdString));
 
   const handleCreateUser = async (e: any) => {
     e.preventDefault();
-    if (userProfile?.nickname === "") return setIsValidForm(false);
-    dispatch(
+    if (userProfile?.nickname === "" || userProfile?.nickname.length < 3)
+      return setIsValidForm(false);
+
+    const cellIdString = store.getState()?.cell?.cellIdString;
+    await dispatch(
       createProfile(
         cellIdString,
         userProfile?.nickname,
         userProfile?.fields?.avatar
       )
     );
+    setIsSubmitted(true);
   };
-  const fetchOtherProfiles = async () => dispatch(fetchProfiles(cellIdString));
 
-  let cellIdString = store.getState()?.cell?.cellIdString;
+  // Set (Profile Card/Profile Form)
+  useEffect(() => {
+    setUserProfile(store.getState()?.user?.myProfile);
+  }, [isSubmitted]);
 
-  useEffect(async () => {
-    if (cellIdString) {
-      await fetchOtherProfiles();
-      setOtherUserProfiles(store.getState().user?.knownProfiles);
-    }
-  }, [userProfile]);
+  // Set (Blank/Other Profiles)
+  useEffect(() => {
+    // if (cellIdString) {
+    //   fetchOtherProfiles().then(() => {
+    //     setOtherUserProfiles(store.getState().user?.knownProfiles);
+    //   });
+    // }
+  }, [isSubmitted]);
 
   return loadingState === "ERROR" ? (
     <p>Error Loading Data</p>
@@ -48,12 +61,13 @@ export const Profiles: React.FunctionComponent<{}> = () => {
     <p>Loading...</p>
   ) : (
     <>
+      {!isValidForm && <h5>Please enter a name of at least 3 characters.</h5>}
       <ProfileCard
         userProfile={userProfile}
         setUserProfile={setUserProfile}
         handleSubmit={handleCreateUser}
       />
-      <OtherProfiles
+      {/* <OtherProfiles
         children={otherUserProfiles.map(
           ({ agent_pub_key, profile }: AgentProfile) => {
             return (
@@ -63,8 +77,7 @@ export const Profiles: React.FunctionComponent<{}> = () => {
               ></ProfileCard>
             );
           }
-        )}
-      />
+        )} */}
     </>
   );
 };

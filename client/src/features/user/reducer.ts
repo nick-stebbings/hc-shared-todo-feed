@@ -1,5 +1,7 @@
 import { convertUint8ToHash, getMyAgentProfile } from "app/utils";
 import { Profile, ProfileStore, AgentProfile } from "./types";
+
+import { userAvatar as defaultImage } from "./components/Profiles/testImage";
 import { createSlice } from "@reduxjs/toolkit";
 import {
   createProfileActionCreator,
@@ -20,7 +22,16 @@ export const userSlice = createSlice({
         payload,
         meta: { cellIdString },
       } = action;
-      return { ...state, myProfile: { ...payload.profile } };
+      return {
+        ...state,
+        myProfile: {
+          nickname: payload.profile.nickname,
+          fields: {
+            avatar: payload.profile.avatar || defaultImage,
+            agentId: payload.agent_pub_key,
+          },
+        },
+      };
     });
     builder.addCase(createProfileActionCreator.failure(), (state, action) => {
       const {
