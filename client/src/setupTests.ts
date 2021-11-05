@@ -19,7 +19,7 @@ interface ZomeCallPayload {
   payload: ZomeInput;
 }
 
-import { CellId } from "services/redux-middleware";
+import { CellId } from "services/reduxMiddleware";
 import { Buffer } from "buffer";
 import { AppWebsocket } from "@holochain/conductor-api";
 const PORT = "8888";

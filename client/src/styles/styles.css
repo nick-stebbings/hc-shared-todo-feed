@@ -4,11 +4,22 @@ body {
   padding: 0;
 }
 
-.profile-card {
+.profile-card,
+.profile-section {
   display: flex;
+}
+
+.profile-section {
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-end;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.profile-card {
+  width: 100%;
   align-items: center;
+  justify-content: flex-end;
 }
 
 .profile-card img {
@@ -28,6 +39,12 @@ body {
 
 ul {
   list-style-type: none;
+}
+
+h5 {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-weight: 200;
+  color: red;
 }
 
 button {

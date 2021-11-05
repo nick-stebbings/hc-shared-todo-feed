@@ -64,14 +64,16 @@ export const Profiles: React.FunctionComponent<{}> = () => {
   ) : loadingState === "LOADING" ? (
     <p>Loading...</p>
   ) : (
-    <>
-      {!isValidForm && <h5>Please enter a name of at least 3 characters.</h5>}
+    <div className="profile-section">
       <ProfileCard
         userProfile={userProfile}
         setUserProfile={setUserProfile}
         handleSubmit={handleCreateUser}
+        isSubmitted={isSubmitted}
         setIsValidForm={setIsValidForm}
       />
+      {!isValidForm && <h5>Please enter a name of at least 3 characters.</h5>}
+      <hr />
       <KnownProfileCards
         children={otherUserProfiles.map(({ profile }: AgentProfile, idx) => {
           return (
@@ -82,6 +84,6 @@ export const Profiles: React.FunctionComponent<{}> = () => {
           );
         })}
       />
-    </>
+    </div>
   );
 };

@@ -6,7 +6,7 @@ import cellReducer from "features/cell/reducer";
 import uiReducer from "features/ui/reducer";
 import todoReducer from "features/todo/reducer";
 
-import { holochainMiddleware } from "services/redux-middleware";
+import { holochainMiddleware } from "services/reduxMiddleware";
 import { APP_WS_URL } from "./constants";
 
 export const store = configureStore({

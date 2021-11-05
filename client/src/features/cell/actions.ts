@@ -1,4 +1,4 @@
-import { CellId } from "services/redux-middleware";
+import { CellId } from "services/reduxMiddleware";
 import { AgentPubKeyB64 } from "@holochain-open-dev/core-types";
 
 const SET_CELL_ID = "cell/setCellIdString";

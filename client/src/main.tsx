@@ -6,7 +6,7 @@ import { App } from "./App";
 import "./styles/styles.css";
 
 import { convertUint8ToHash } from "./app/utils";
-import { cellIdToString } from "services/redux-middleware";
+import { cellIdToString } from "services/reduxMiddleware";
 import connect from "services/hcWebSockets";
 
 import { setCellId, setAgentPublicKey } from "features/cell/actions";

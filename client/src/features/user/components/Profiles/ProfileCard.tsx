@@ -6,6 +6,7 @@ type ProfileDetailsProps = {
   userProfile: ProfileType | null;
   setUserProfile?: (ev: any) => void;
   handleSubmit?: (ev: any) => void;
+  isSubmitted?: boolean;
   setIsValidForm?: (ev: any) => void;
 };
 
@@ -14,6 +15,7 @@ export const ProfileCard: React.FunctionComponent<ProfileDetailsProps> = ({
   userProfile,
   setUserProfile,
   handleSubmit,
+  isSubmitted,
   setIsValidForm,
 }) => {
   const noUserExists = !userProfile?.fields?.avatar;
@@ -36,7 +38,7 @@ export const ProfileCard: React.FunctionComponent<ProfileDetailsProps> = ({
             onChange={handleChange}
             type="text"
           ></input>
-          <button type="submit" onClick={handleSubmit}>
+          <button type="submit" disabled={isSubmitted} onClick={handleSubmit}>
             Register
           </button>
         </form>

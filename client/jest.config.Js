@@ -23,7 +23,7 @@ module.exports = {
 
   testMatch: [
     "**/__tests__/**/*.ts?(x)",
-    "/**/(TodoList|TodoItem)?(*.)+(spec|test).ts?(x)",
+    "/**/(ProfileCard)?(*.)+(spec|test).ts?(x)",
   ],
   globals: {
     "ts-jest": {

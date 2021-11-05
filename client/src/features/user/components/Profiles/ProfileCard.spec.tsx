@@ -1,20 +1,26 @@
 import React from "react";
 import { render, screen, waitFor } from "@testing-library/react";
-
 import userEvent from "@testing-library/user-event";
+
 const MockConductor = require("@holo-host/mock-conductor");
-const { ZOME_CALL_TYPE } = MockConductor;
-import { CellId } from "services/redux-middleware";
-import { Buffer } from "buffer";
-import { AppWebsocket, AdminWebsocket } from "@holochain/conductor-api";
-const PORT = "8888";
+import { mockCallZomeFn, PORT } from "setupTests";
+import api from "services/zomeApis";
+
+import { store } from "app/store";
+import { Provider } from "react-redux";
+import { initialState } from "features/user/reducer";
 
 import { ProfileCard } from "./ProfileCard";
 type ComponentProps = React.ComponentProps<typeof ProfileCard>;
 
-//Test Helpers
+//Helpers
+
 function renderUI(props: ComponentProps) {
-  return render(<ProfileCard {...props} />);
+  return render(
+    <Provider store={store}>
+      <ProfileCard {...props} />
+    </Provider>
+  );
 }
 
 // Mocks
@@ -24,29 +30,9 @@ const testInput = {
   nickname: testUsername,
   fields: { avatar: userAvatar },
 };
-interface ZomeInput {
-  number: number;
-}
-interface ZomeCallPayload {
-  cap: Buffer | null;
-  cell_id: CellId;
-  zome_name: string;
-  fn_name: string;
-  provenance: Buffer;
-  payload: ZomeInput;
-}
-const appId = "test-app";
-const testZomePayload: ZomeCallPayload = {
-  cap: null,
-  cell_id: "test-id",
-  zome_name: "test_zome",
-  fn_name: "test-fn",
-  provenance: Buffer.from("test"),
-  payload: { number: 1 },
-};
 
 describe("<ProfileCard>", () => {
-  describe("with a fresh session", () => {
+  describe("Given a fresh session", () => {
     it("renders an input element for username registration", () => {
       const { queryByPlaceholderText } = renderUI({});
       const inputElement = screen.queryByPlaceholderText(
@@ -72,25 +58,22 @@ describe("<ProfileCard>", () => {
       expect(buttonElement).toBeInTheDocument();
       expect(buttonElement).toHaveAttribute("type", "submit");
     });
-
-    describe("<button> is clicked and the form is VALID", () => {
+    describe("Given a valid input value for username and a mock zome call service", () => {
       var mockHolochainConductor: any;
-      const mockCallZomeFn = jest.fn(() =>
-        (async () => {
-          const expectedResponse = {
-            field1: "value1",
-          };
-          mockHolochainConductor.once(ZOME_CALL_TYPE, testZomePayload);
 
-          const adminWebsocket = await AppWebsocket.connect(
-            `ws://localhost:${PORT}`
-          );
-          const response = await adminWebsocket.callZome(testZomePayload);
-          return expect(response).toEqual(expectedResponse);
-        })()
-      );
       beforeAll(() => {
         mockHolochainConductor = new MockConductor(PORT);
+        api.profiles["create_profile"].create = mockCallZomeFn(
+          mockHolochainConductor
+        );
+      });
+
+      beforeEach(() => {
+        renderUI({
+          userProfile: initialState.myProfile,
+          handleSubmit: mockCallZomeFn,
+          setIsValidForm: () => true,
+        });
       });
 
       afterEach(() => {
@@ -100,35 +83,48 @@ describe("<ProfileCard>", () => {
 
       afterAll(() => mockHolochainConductor.close());
 
-      it("becomes disabled and says loading while waiting", async () => {
-        renderUI({ handleSubmit: mockCallZomeFn });
-        const buttonElement = screen.getByRole("button");
+      it("When <button> is clicked Then it becomes disabled, a message says loading while waiting", async () => {
+        const buttonElement = screen.getByText(/Register/i);
 
         userEvent.type(screen.getByLabelText(/Nickname/i), testUsername);
-        userEvent.click(screen.getByText(/Register/i));
-        const loadingState = await screen.findByText(/loading/);
+        userEvent.click(buttonElement);
+        const loadingState = await screen.findByText(/loading/i);
 
         expect(loadingState).toBeInTheDocument();
         expect(buttonElement).toBeDisabled();
       });
 
-      it("calls zomeFn register nickname", async () => {
-        renderUI({});
-
+      it("And it calls zomeFn register nickname", async () => {
         userEvent.type(screen.getByLabelText(/Nickname/i), testUsername);
         userEvent.click(screen.getByText(/Register/i));
 
-        expect(mockCallZomeFn).toHaveBeenCalledTimes(1);
+        expect(api.profiles.create_profile.create).toHaveBeenCalledTimes(1);
       });
-      it("returns message with a confirmation", () => {});
-    });
-    describe("<button> is clicked and the form is INVALID", () => {
-      it("is disabled", () => {});
-      test("there is a prompt text next to the invalid field", () => {});
+      describe("And it then displays the new user card", () => {
+        it("renders a span element with the username", () => {
+          const spanElement = screen.getByText(new RegExp(testUsername));
+          expect(spanElement).toBeInTheDocument();
+          expect(spanElement.nodeName).toBe("SPAN");
+        });
+
+        it("renders a div element with the avatar inside", () => {
+          const img = screen.getByAltText("User Avatar");
+          const div = img?.parentNode;
+
+          expect(div).toBeDefined();
+          expect(div).toBeInTheDocument();
+          expect(img).toBeInTheDocument();
+          expect(img).toHaveAttribute(
+            "src",
+            `data:image/png;base64,${userAvatar}`
+          );
+          expect(div!.nodeName).toBe("DIV");
+        });
+      });
     });
   });
 
-  describe("when a user has already registered", () => {
+  describe("Given a user has already registered", () => {
     it("renders a span element with the username", () => {
       renderUI({ userProfile: testInput });
 
@@ -150,3 +146,8 @@ describe("<ProfileCard>", () => {
     });
   });
 });
+
+// describe("<button> is clicked and the form is INVALID", () => {
+//   it("is disabled", () => {});
+//   test("there is a prompt text next to the invalid field", () => {});
+// });
