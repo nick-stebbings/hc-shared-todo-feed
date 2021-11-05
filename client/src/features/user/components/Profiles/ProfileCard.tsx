@@ -6,6 +6,7 @@ type ProfileDetailsProps = {
   userProfile: ProfileType | null;
   setUserProfile?: (ev: any) => void;
   handleSubmit?: (ev: any) => void;
+  setIsValidForm?: (ev: any) => void;
 };
 
 export const ProfileCard: React.FunctionComponent<ProfileDetailsProps> = ({
@@ -13,15 +14,17 @@ export const ProfileCard: React.FunctionComponent<ProfileDetailsProps> = ({
   userProfile,
   setUserProfile,
   handleSubmit,
+  setIsValidForm,
 }) => {
   const noUserExists = !userProfile?.fields?.avatar;
   const handleChange = (e: any) => {
+    setIsValidForm && setIsValidForm(!(e.target.value.length < 4));
     setUserProfile &&
       setUserProfile({ nickname: e.target.value, fields: { avatar: "" } });
   };
 
   return (
-    <div>
+    <div className="profile-card">
       {noUserExists ? (
         <form>
           <label htmlFor="user-nickname">Nickname:</label>

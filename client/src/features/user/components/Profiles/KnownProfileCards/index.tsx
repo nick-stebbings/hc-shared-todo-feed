@@ -1,10 +1,12 @@
 import React from "react";
 import { List } from "components/List";
 
-interface OtherProfilesProps {
+interface KnownProfileCardsProps {
   children: React.ReactNode;
 }
 
-export const OtherProfiles: React.FC<OtherProfilesProps> = ({ children }) => {
+export const KnownProfileCards: React.FC<KnownProfileCardsProps> = ({
+  children,
+}) => {
   return <List listItems={children}></List>;
 };

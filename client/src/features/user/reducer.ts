@@ -1,7 +1,8 @@
 import { convertUint8ToHash, getMyAgentProfile } from "app/utils";
 import { Profile, ProfileStore, AgentProfile } from "./types";
 
-import { userAvatar as defaultImage } from "./components/Profiles/testImage";
+import { userAvatar as defaultMyImage } from "./components/Profiles/testImage";
+import { defaultImage } from "./components/Profiles/defaultImage";
 import { createSlice } from "@reduxjs/toolkit";
 import {
   createProfileActionCreator,
@@ -27,8 +28,8 @@ export const userSlice = createSlice({
         myProfile: {
           nickname: payload.profile.nickname,
           fields: {
-            avatar: payload.profile.avatar || defaultImage,
-            agentId: payload.agent_pub_key,
+            avatar: payload.profile.avatar || defaultMyImage,
+            agentPubKey: payload.agent_pub_key,
           },
         },
       };
@@ -48,10 +49,29 @@ export const userSlice = createSlice({
       const agentPubKeyArr = cellIdString.split(":]").slice(1)[0].split(",");
       const myProfile =
         getMyAgentProfile(convertUint8ToHash(agentPubKeyArr), payload) ||
-        initialState.myProfile;
-      console.log("myProfile :>> ", myProfile);
-
-      return { ...state, myProfile, knownProfiles: [...payload] };
+        state.myProfile;
+      console.log("agentPubKeyArr, myProfile :>> ", agentPubKeyArr, myProfile);
+      const restOfProfiles = payload.slice(1);
+      return {
+        ...state,
+        myProfile,
+        knownProfiles: [
+          ...restOfProfiles.map(
+            ({ agent_pub_key, profile: { nickname, fields } }: any) => {
+              return {
+                profile: {
+                  nickname,
+                  fields: {
+                    ...fields,
+                    avatar: fields.avatar || defaultImage,
+                    agentPubKey: agent_pub_key,
+                  },
+                },
+              };
+            }
+          ),
+        ],
+      };
     });
     builder.addCase(fetchProfilesActionCreator.failure(), (state, action) => {
       const {

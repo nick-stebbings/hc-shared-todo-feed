@@ -3,16 +3,21 @@ import React, { useState, useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "app/hooks";
 import { store } from "app/store";
 
-import { getRequestStatus } from "features/ui/selectors";
 import { Profile as ProfileType, AgentProfile } from "../../types";
+import { getRequestStatus } from "features/ui/selectors";
+import { getStringId } from "features/cell/selectors";
 import { createProfile, fetchProfiles } from "../../actions";
+
 import { ProfileCard } from "./ProfileCard";
-import { OtherProfiles } from "./OtherProfiles";
+import { KnownProfileCards } from "./KnownProfileCards";
 
 export const Profiles: React.FunctionComponent<{}> = () => {
   const dispatch = useAppDispatch();
-  const cellIdString = store.getState()?.cell?.cellIdString;
+  const fetchKnownProfiles = async () => dispatch(fetchProfiles(cellIdString));
+
+  const cellIdString = useAppSelector(getStringId);
   const loadingState = useAppSelector(getRequestStatus);
+
   const [isValidForm, setIsValidForm] = useState<boolean>(true);
   const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
 
@@ -22,8 +27,6 @@ export const Profiles: React.FunctionComponent<{}> = () => {
   const [otherUserProfiles, setOtherUserProfiles] = useState<[ProfileType?]>(
     []
   );
-
-  const fetchOtherProfiles = async () => dispatch(fetchProfiles(cellIdString));
 
   const handleCreateUser = async (e: any) => {
     e.preventDefault();
@@ -38,6 +41,7 @@ export const Profiles: React.FunctionComponent<{}> = () => {
         userProfile?.fields?.avatar
       )
     );
+    setIsValidForm(true);
     setIsSubmitted(true);
   };
 
@@ -48,11 +52,11 @@ export const Profiles: React.FunctionComponent<{}> = () => {
 
   // Set (Blank/Other Profiles)
   useEffect(() => {
-    // if (cellIdString) {
-    //   fetchOtherProfiles().then(() => {
-    //     setOtherUserProfiles(store.getState().user?.knownProfiles);
-    //   });
-    // }
+    if (cellIdString) {
+      fetchKnownProfiles().then(() => {
+        setOtherUserProfiles(store.getState().user?.knownProfiles);
+      });
+    }
   }, [isSubmitted]);
 
   return loadingState === "ERROR" ? (
@@ -66,18 +70,18 @@ export const Profiles: React.FunctionComponent<{}> = () => {
         userProfile={userProfile}
         setUserProfile={setUserProfile}
         handleSubmit={handleCreateUser}
+        setIsValidForm={setIsValidForm}
       />
-      {/* <OtherProfiles
-        children={otherUserProfiles.map(
-          ({ agent_pub_key, profile }: AgentProfile) => {
-            return (
-              <ProfileCard
-                key={agent_pub_key}
-                userProfile={profile}
-              ></ProfileCard>
-            );
-          }
-        )} */}
+      <KnownProfileCards
+        children={otherUserProfiles.map(({ profile }: AgentProfile, idx) => {
+          return (
+            <ProfileCard
+              key={profile.fields.agentPubKey || idx}
+              userProfile={profile}
+            ></ProfileCard>
+          );
+        })}
+      />
     </>
   );
 };
