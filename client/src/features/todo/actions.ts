@@ -11,9 +11,6 @@ const {
   updateTodo,
 } = todoSlice.actions;
 
-console.log("TodoFeedZomeActionStrings :>> ", TodoFeedZomeActionStrings);
-console.log("TodoFeedZomeActionStrings :>> ", TodoFeedZomeActionStrings["0"]);
-console.log("zomeApis :>> ", zomeApis);
 const createTodoListZome = (cellIdString: string, list: TodoList) =>
   zomeApis.todofeed[TodoFeedZomeActionStrings["0"]].create({
     cellIdString,

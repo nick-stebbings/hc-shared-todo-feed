@@ -1,22 +1,14 @@
-import { userSlice } from "./reducer";
-import { createZomeCallAsyncAction } from "services/reduxMiddleware";
+import { store } from "app/store";
+import zomeApis, { ProfilesZomeActionStrings } from "services/zomeApis";
+
 import { userAvatar as defaultImage } from "./components/Profiles/testImage";
 
-const createProfileActionCreator = createZomeCallAsyncAction(
-  "profiles",
-  "create_profile"
-);
-const fetchProfilesActionCreator = createZomeCallAsyncAction(
-  "profiles",
-  "get_all_profiles"
-);
-
-const createProfile = (
-  cellIdString: string,
+const createProfileZome = (
   nickname: string,
-  avatar: string = defaultImage
+  avatar: string = defaultImage,
+  cellIdString: string = store.getState()?.cell?.cellIdString
 ) =>
-  createProfileActionCreator.create({
+  zomeApis.profiles[ProfilesZomeActionStrings["0"]].create({
     payload: {
       nickname,
       fields: {
@@ -26,14 +18,10 @@ const createProfile = (
     cellIdString,
   });
 
-const fetchProfiles = (cellIdString: string) =>
-  fetchProfilesActionCreator.create({
-    cellIdString,
-  });
+const fetchProfilesZome = (cellIdString: string) =>
+  zomeApis.profiles[ProfilesZomeActionStrings["1"]].create();
 
-export {
-  createProfileActionCreator,
-  fetchProfilesActionCreator,
-  createProfile,
-  fetchProfiles,
-};
+const fetchMyProfileZome = (cellIdString: string) =>
+  zomeApis.profiles[ProfilesZomeActionStrings["2"]].create();
+
+export { createProfileZome, fetchProfilesZome, fetchMyProfileZome };

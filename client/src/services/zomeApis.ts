@@ -14,7 +14,7 @@ export enum TodoFeedZomeActionStrings {
   "update_todolist",
 }
 
-export enum userProfilesActionStrings {
+export enum ProfilesZomeActionStrings {
   "create_profile",
   "get_all_profiles",
   "get_my_profile",
@@ -24,7 +24,7 @@ export enum userProfilesActionStrings {
 
 const apis: APIs = { profiles: {}, todofeed: {} };
 
-for (const zomeFunctionName in userProfilesActionStrings) {
+for (const zomeFunctionName in ProfilesZomeActionStrings) {
   if (isNaN(+zomeFunctionName)) {
     apis.profiles[zomeFunctionName] = createZomeCallAsyncAction(
       "profiles",

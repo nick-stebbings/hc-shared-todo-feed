@@ -6,14 +6,14 @@ import { store } from "app/store";
 import { Profile as ProfileType, AgentProfile } from "../../types";
 import { getRequestStatus } from "features/ui/selectors";
 import { getStringId } from "features/cell/selectors";
-import { createProfile, fetchProfiles } from "../../actions";
+import { createProfileZome, fetchProfilesZome } from "../../actions";
 
 import { ProfileCard } from "./ProfileCard";
 import { KnownProfileCards } from "./KnownProfileCards";
 
 export const Profiles: React.FunctionComponent<{}> = () => {
   const dispatch = useAppDispatch();
-  const fetchKnownProfiles = async () => dispatch(fetchProfiles(cellIdString));
+  const fetchKnownProfiles = async () => dispatch(fetchProfilesZome(cellIdString));
 
   const cellIdString = useAppSelector(getStringId);
   const loadingState = useAppSelector(getRequestStatus);
@@ -35,7 +35,7 @@ export const Profiles: React.FunctionComponent<{}> = () => {
 
     const cellIdString = store.getState()?.cell?.cellIdString;
     await dispatch(
-      createProfile(
+      createProfileZome(
         cellIdString,
         userProfile?.nickname,
         userProfile?.fields?.avatar

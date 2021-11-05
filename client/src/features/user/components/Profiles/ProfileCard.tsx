@@ -8,6 +8,7 @@ type ProfileDetailsProps = {
   handleSubmit?: (ev: any) => void;
   isSubmitted?: boolean;
   setIsValidForm?: (ev: any) => void;
+  onChange?: (ev: any) => void;
 };
 
 export const ProfileCard: React.FunctionComponent<ProfileDetailsProps> = ({
@@ -17,11 +18,14 @@ export const ProfileCard: React.FunctionComponent<ProfileDetailsProps> = ({
   handleSubmit,
   isSubmitted,
   setIsValidForm,
+  onChange,
 }) => {
   const noUserExists = !userProfile?.fields?.avatar;
   const handleChange = (e: any) => {
     setIsValidForm && setIsValidForm(!(e.target.value.length < 4));
-    setUserProfile &&
+    onChange // Allows mock testing with useState
+      ? onChange({ nickname: e.target.value, fields: { avatar: "" } }) 
+      : setUserProfile &&
       setUserProfile({ nickname: e.target.value, fields: { avatar: "" } });
   };
 
@@ -38,7 +42,12 @@ export const ProfileCard: React.FunctionComponent<ProfileDetailsProps> = ({
             onChange={handleChange}
             type="text"
           ></input>
-          <button type="submit" disabled={isSubmitted} onClick={handleSubmit}>
+          <button
+            type="submit"
+            aria-roledescription="submit"
+            disabled={isSubmitted}
+            onClick={handleSubmit}
+          >
             Register
           </button>
         </form>
