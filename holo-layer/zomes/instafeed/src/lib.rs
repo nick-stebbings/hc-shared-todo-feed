@@ -1,9 +1,12 @@
-use hdk::prelude::holo_hash::EntryHashB64;
+// use ::holo_hash::HoloHashB64;
 use hdk::prelude::*;
+use hdk_crud::{
+    signals::{ActionSignal},
+    wire_element::WireElement,
+    retrieval::retrieval::FetchOptions,
+};
 use crate::helpers::progenitor::DnaProperties;
-use crate::entries::todo::TodoList;
-use crate::entries::todo::TodoListDTO;
-use crate::entries::todo::AllTodoListDTO;
+use crate::entries::todo::*;
 mod helpers;
 mod entries;
 
@@ -15,7 +18,7 @@ pub fn who_am_i(_: ()) -> ExternResult<AgentPubKey> {
 }
 
 #[hdk_extern]
-pub fn get_dna_properties(_: ()) -> ExternResult<ZomeInfo> {
+pub fn get_dna_properties(_: ()) -> ExternResult<DnaProperties> {
     DnaProperties::get()
 }
 
@@ -25,21 +28,32 @@ pub fn am_i_developer(_: ()) -> ExternResult<bool> {
 }
 
 #[hdk_extern]
-pub fn create_todolist(input: TodoListDTO) -> ExternResult<EntryHashB64> {
-    entries::todo::create_todolist(input)
+pub fn get_todolist_entry(input: TodoListDTO) -> ExternResult<TodoList> {
+    entries::todo::get_todolist_entry(input)
 }
 
 #[hdk_extern]
-pub fn get_todolist(input: TodoListDTO) -> ExternResult<TodoList> {
-    entries::todo::get_todolist(input)
+pub fn get_all_todolists(_input: TodoList) -> ExternResult<Vec<WireElement<TodoList>>> {
+    fetch_todolists(FetchOptions::All)
 }
 
-#[hdk_extern]
-pub fn get_all_todolists(_input: TodoList) -> ExternResult<Vec<AllTodoListDTO>> {
-    entries::todo::get_all_todolists()
+/*
+SIGNALS
+*/
+
+#[derive(Debug, Serialize, Deserialize, SerializedBytes)]
+#[serde(untagged)]
+pub enum SignalType {
+    TodoList(ActionSignal<TodoList>),
 }
 
-#[hdk_extern]
-pub fn update_todolist(_input: TodoList) -> ExternResult<EntryHashB64> {
-    unimplemented!();
+pub fn get_peers() -> ExternResult<Vec<AgentPubKey>> {
+    Ok(Vec::new())
+}
+
+pub fn get_peers_latest() -> ExternResult<Vec<AgentPubKey>> {
+    get_peers()
+}
+pub fn get_peers_content() -> ExternResult<Vec<AgentPubKey>> {
+    get_peers()
 }

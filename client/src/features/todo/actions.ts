@@ -17,8 +17,13 @@ const createTodoListZome = (cellIdString: string, list: TodoList) =>
     list,
   });
 
-const updateTodoListZome = (cellIdString: string, list: TodoList) =>
+const fetchTodoListsZome = (cellIdString: string) =>
   zomeApis.todofeed[TodoFeedZomeActionStrings["1"]].create({
+    cellIdString,
+  });
+
+const updateTodoListZome = (cellIdString: string, list: TodoList) =>
+  zomeApis.todofeed[TodoFeedZomeActionStrings["2"]].create({
     cellIdString,
     list,
   });
@@ -27,6 +32,7 @@ export {
   TodoFeedZomeActionStrings,
   createList,
   createTodoListZome,
+  fetchTodoListsZome,
   deleteList,
   updateList,
   updateTodoListZome,

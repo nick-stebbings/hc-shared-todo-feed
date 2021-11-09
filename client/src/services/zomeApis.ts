@@ -11,7 +11,8 @@ interface APIs {
 
 export enum TodoFeedZomeActionStrings {
   "create_todolist",
-  "update_todolist",
+  "get_all_todolists",
+  // "update_todolist",
 }
 
 export enum ProfilesZomeActionStrings {

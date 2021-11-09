@@ -9,7 +9,12 @@ name = "instafeed"
 crate-type = ["cdylib", "rlib"]
 
 [dependencies]
+hdk_crud = { version = "0.4.0"}
+holo_hash = { version = "0.0.8", features = ["encoding"] }
 serde = "1"
 serde_json = "1.0.64"
-hdk = "0.0.112"
-holo_hash = {version = "0.0.10", features = ["encoding"]}
+hdk = "0.0.109"
+chrono = "0.4.19"
+paste = "1.0.5"
+thiserror = "1"
+

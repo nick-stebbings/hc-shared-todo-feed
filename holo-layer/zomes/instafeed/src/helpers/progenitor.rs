@@ -7,14 +7,14 @@ pub struct DnaProperties {
 }
 
 impl DnaProperties {
-    pub fn get() -> ExternResult<ZomeInfo> {
-        let prop: ZomeInfo = zome_info()?;
+    pub fn get() -> ExternResult<Self> {
+        let prop: DnaProperties = zome_info()?.properties.try_into()?;
         Ok(prop)
     }
 
     pub fn am_i_developer() -> ExternResult<bool> {
-        let _my_addr = agent_info()?.agent_latest_pubkey;
-        let _developer_addr = DnaProperties::get()?.id;
-        Ok(true)
+        let my_addr = agent_info()?.agent_latest_pubkey;
+        let developer_addr = DnaProperties::get()?.developer_address;
+        Ok(my_addr == developer_addr)
     }
 }

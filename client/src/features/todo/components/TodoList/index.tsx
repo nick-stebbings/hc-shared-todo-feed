@@ -13,6 +13,7 @@ import {
   createList,
   createTodoListZome,
   updateTodoListZome,
+  fetchTodoListsZome,
   updateList,
 } from "../../actions";
 
@@ -128,7 +129,7 @@ const index: React.FC<indexProps> = ({
         ? dispatch(updateList({ list })) &&
           dispatch(updateTodoListZome(cellIdString, list))
         : dispatch(createList({ list })) &&
-          dispatch(createTodoListZome(cellIdString, list));
+          dispatch(fetchTodoListsZome(cellIdString, list));
       setHasBeenSaved(true);
     } catch (err) {
       console.log("err :>> ", err);

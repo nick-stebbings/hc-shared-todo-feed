@@ -5,7 +5,7 @@ import { InstallAgentsApp, _log, Zome_Name } from "./common";
 
 const enum zome_function {
   create_todolist = "create_todolist",
-  get_todolist = "get_todolist",
+  get_todolist_entry = "get_todolist_entry",
   get_all_todolists = "get_all_todolists",
 }
 
@@ -13,7 +13,7 @@ module.exports = async (orchestrator) => {
   orchestrator.registerScenario("create todolist", async (s, t) => {
     const [alice] = await InstallAgentsApp(s, ["alice"]);
 
-    //*********** Test Case: create_todolist, Success
+    //*********** Test Case 1: create_todolist, Success
     const todolist = {
       id: "1",
       todos: { "1": "Get mail", "2": "Buy a paper", "3": "Get milk" },
@@ -33,7 +33,7 @@ module.exports = async (orchestrator) => {
 
     await sleep(10);
 
-    // *********** Test Case: create_todolist, Failure due to no id
+    // *********** Test Case 2: create_todolist, Failure due to no id
     const todolist2 = {
       id: "",
       todos: { "1": "Get mail", "2": "Buy a paper", "3": "Get milk" },
@@ -50,15 +50,16 @@ module.exports = async (orchestrator) => {
     } catch (e) {
       t.deepEqual(
         e?.data?.data,
-        'Wasm error while working with Ribosome: Guest("Id can not be null or empty")'
+        "Source chain error: InvalidCommit error: Id can not be null or empty"
       );
     }
 
     await sleep(10);
 
-    //*********** Test Case: create_todolist, Failure due to no todos
+    //*********** Test Case 3: create_todolist, Failure due to no todos
     const todolist3 = {
       id: "1",
+      todos: "",
     };
 
     try {
@@ -70,45 +71,45 @@ module.exports = async (orchestrator) => {
 
       t.fail();
     } catch (e) {
-      // t.deepEqual(
-      //   e?.data?.data,
-      //   'Wasm error while working with Ribosome: Guest("Todos can not be null or empty")'
-      // );
+      t.deepEqual(
+        e?.data,
+        "Source chain error: InvalidCommit error: Todos can not be null or empty"
+      );
     }
 
     await sleep(10);
 
-    //*********** Test Case: Get Element Alice
+    // //*********** Test Case 4: Get Element Alice
 
-    let alice_read_element = await alice.call(
-      Zome_Name,
-      zome_function.get_todolist,
-      todolist
-    );
+    // let alice_read_element = await alice.call(
+    //   Zome_Name,
+    //   zome_function.get_todolist_entry,
+    //   todolist
+    // );
 
-    _log("alice read element", alice_read_element);
+    // _log("alice read element", alice_read_element);
 
-    t.ok(alice_read_element);
+    // t.ok(alice_read_element);
 
-    await sleep(10);
+    // await sleep(10);
 
-    //*********** Test Case: Get Element Bob
+    // //*********** Test Case: Get Element Bob
 
-    const [bob] = await InstallAgentsApp(s, ["bob"]);
+    // const [bob] = await InstallAgentsApp(s, ["bob"]);
 
-    let bob_read_element = await bob.call(
-      Zome_Name,
-      zome_function.get_todolist,
-      todolist
-    );
+    // let bob_read_element = await bob.call(
+    //   Zome_Name,
+    //   zome_function.get_todolist_entry,
+    //   todolist
+    // );
 
-    t.ok(bob_read_element);
+    // t.ok(bob_read_element);
 
-    _log("bob read element", bob_read_element);
+    // _log("bob read element", bob_read_element);
 
-    await sleep(10);
+    // await sleep(10);
 
-    //*********** Test Case: Get All T
+    //*********** Test Case 5: Get All Todolists
     const todolist4 = {
       id: "2",
       todos: { "1": "Go to doctors", "2": "Buy a car", "3": "Go for a run" },
