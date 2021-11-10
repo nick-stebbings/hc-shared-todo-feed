@@ -127,9 +127,9 @@ const index: React.FC<indexProps> = ({
     try {
       hasBeenSaved
         ? dispatch(updateList({ list })) &&
-          dispatch(updateTodoListZome(cellIdString, list))
+          dispatch(fetchTodoListsZome(cellIdString))
         : dispatch(createList({ list })) &&
-          dispatch(fetchTodoListsZome(cellIdString, list));
+          dispatch(createTodoListZome(cellIdString, list));
       setHasBeenSaved(true);
     } catch (err) {
       console.log("err :>> ", err);

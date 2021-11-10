@@ -1,6 +1,6 @@
 import zomeApis, { TodoFeedZomeActionStrings } from "services/zomeApis";
 
-import { TodoList } from "./types";
+import { TodoList, TodoListInfo, TodoListsInfo, TodoLists } from "./types";
 import { todoSlice } from "./reducer";
 const {
   createList,
@@ -11,21 +11,21 @@ const {
   updateTodo,
 } = todoSlice.actions;
 
-const createTodoListZome = (cellIdString: string, list: TodoList) =>
+const createTodoListZome = (cellIdString: string, list: TodoList): Promise<TodoListInfo> =>
   zomeApis.todofeed[TodoFeedZomeActionStrings["0"]].create({
     cellIdString,
-    list,
+    payload: {list.id, todos: JSON.stringify(list.todos)},
   });
 
-const fetchTodoListsZome = (cellIdString: string) =>
+const fetchTodoListsZome = (cellIdString: string): Promise<TodoListsInfo> =>
   zomeApis.todofeed[TodoFeedZomeActionStrings["1"]].create({
     cellIdString,
   });
 
-const updateTodoListZome = (cellIdString: string, list: TodoList) =>
+const updateTodoListZome = (cellIdString: string, list: TodoList): Promise<TodoListInfo> =>
   zomeApis.todofeed[TodoFeedZomeActionStrings["2"]].create({
     cellIdString,
-    list,
+    payload:  {list.id, todos: JSON.stringify(list.todos)},
   });
 
 export {

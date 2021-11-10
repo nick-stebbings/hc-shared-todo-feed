@@ -32,10 +32,10 @@ pub fn get_todolist_entry(input: TodoListDTO) -> ExternResult<TodoList> {
     entries::todo::get_todolist_entry(input)
 }
 
-#[hdk_extern]
-pub fn get_all_todolists(_input: TodoList) -> ExternResult<Vec<WireElement<TodoList>>> {
-    fetch_todolists(FetchOptions::All)
-}
+// #[hdk_extern]
+// pub fn get_all_todolists(_: ()) -> ExternResult<Vec<<TodoList>>> { 
+//     Ok(inner_fetch_todolists(FetchOptions::All, GetOptions::content()))
+// }
 
 /*
 SIGNALS

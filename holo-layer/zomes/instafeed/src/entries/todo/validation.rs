@@ -6,6 +6,9 @@ use thiserror::Error;
 
 #[derive(Error, Debug)]
 pub enum Error {
+    #[error("Deserialization Failed")]
+    DeserializationFailed,
+
     #[error("Wasm Error {0}")]
     Wasm(WasmError)
 }
@@ -35,10 +38,10 @@ fn validate_create_entry_todolist(validate_data: ValidateData) -> ExternResult<V
         msgs.push("Id can not be null or empty".to_string());
         result = false;
     }
-    if UIEnum::from(proposed_list.todos).0 == "" {
-        msgs.push("Todos can not be null or empty".to_string());
-        result = false;
-    }
+    // if proposed_list.todos == "" {
+    //     msgs.push("Todos can not be null or empty".to_string());
+    //     result = false;
+    // }
 
     if result == false {
         return Ok(ValidateCallbackResult::Invalid(msgs.join("\r")));

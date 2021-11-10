@@ -21,49 +21,49 @@ fn convert_to_receiver_signal(signal: ActionSignal<TodoList>) -> SignalType {
 #[derive(Clone, PartialEq)]
 pub struct TodoList {
     pub id: String,
-    pub todos: Todos,
+    pub todos: BTreeMap<String, String>,
 }
 
 impl TodoList {
-    pub fn new(id: &str, todos:Todos) -> Self {
+    pub fn new(id: &str, todos:BTreeMap<String,String>) -> Self {
         TodoList {
             id: id.trim().to_string().clone(),
-            todos: todos,
+            todos: todos.clone(),
         }
     }
 }
 #[derive(Debug, Serialize, Deserialize, SerializedBytes, Clone, PartialEq)]
 pub struct UIEnum(pub String);
 
-#[derive(Serialize, Deserialize, Debug, SerializedBytes, Clone, PartialEq)]
-#[serde(from = "UIEnum")]
-#[serde(into = "UIEnum")]
-pub enum Todos {
-    List,
-}
+// #[derive(Serialize, Deserialize, Debug, SerializedBytes, Clone, PartialEq)]
+// #[serde(from = "UIEnum")]
+// #[serde(into = "UIEnum")]
+// // pub enum Todos {
+//     List,
+// }
 
-impl From<UIEnum> for Todos {
-    fn from(ui_enum: UIEnum) -> Self {
-        match ui_enum.0.as_str() {
-            // "Incomplete" => Self::Incomplete,
-            // "InProcess" => Self::InProcess,
-            // "Complete" => Self::Complete,
-            // "InReview" => Self::InReview,
-            _ => Self::List,
-        }
-    }
-}
-impl From<Todos> for UIEnum {
-    fn from(todos_status: Todos) -> Self {
-        Self(todos_status.to_string())
-    }
-}
+// impl From<UIEnum> for Todos {
+//     fn from(ui_enum: UIEnum) -> Self {
+//         match ui_enum.0.as_str() {
+//             // "Incomplete" => Self::Incomplete,
+//             // "InProcess" => Self::InProcess,
+//             // "Complete" => Self::Complete,
+//             // "InReview" => Self::InReview,
+//             _ => Self::List,
+//         }
+//     }
+// }
+// impl From<Todos> for UIEnum {
+//     fn from(todos_status: Todos) -> Self {
+//         Self(todos_status.to_string())
+//     }
+// }
 
-impl fmt::Display for Todos {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "{:?}", self)
-    }
-}
+// impl fmt::Display for Todos {
+//     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+//         write!(f, "{:?}", self)
+//     }
+// }
 
 crud!(
     TodoList,
@@ -76,7 +76,7 @@ crud!(
 #[derive(Clone, Serialize, Deserialize, Debug, SerializedBytes)]
 pub struct TodoListDTO {
     pub id: String,
-    pub todos: Todos,
+    pub todos: BTreeMap<String, String>,
 }
 
 impl TodoListDTO {
@@ -105,7 +105,7 @@ pub fn get_todolist_entry(input: TodoListDTO) -> ExternResult<TodoList> {
     if let Err(e) = input.validate() {
         return Err(WasmError::Guest(e));
     }
-    let hash: EntryHash = hash_entry(TodoList::new(&input.id, input.todos.clone()))?;
+    let hash: EntryHash = hash_entry(TodoList::new(&input.id, input.todos))?;
     let element: Element = get(EntryHash::from(hash), GetOptions::default())?.ok_or(err( "Can't find a list entry with that content") )?;
     
     let option: Option<TodoList> = element.entry().to_app_option()?;
