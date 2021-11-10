@@ -17,6 +17,17 @@ module.exports = {
     ecmaVersion: 12,
     sourceType: "module",
   },
-  plugins: ["react", "@typescript-eslint", "testing-library"],
-  rules: {},
+  plugins: ["react", "@typescript-eslint", "testing-library", "import"],
+  rules: {
+    "@typescript-eslint/no-unused-vars": "off",
+    "@typescript-eslint/explicit-module-boundary-types": "off",
+  },
+  settings: {
+    "import/resolver": {
+      typescript: {
+        alwaysTryTypes: false,
+        project: "/src",
+      },
+    },
+  },
 };

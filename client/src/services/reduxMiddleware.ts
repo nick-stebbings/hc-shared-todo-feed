@@ -11,6 +11,14 @@ export async function zomeCall(
   const { cell_id, cellIdString, zome_name, fn_name, provenance } = action.meta;
   const { payload } = action;
   try {
+    console.log("action zome call :>> ", {
+      cap: null,
+      cell_id,
+      zome_name,
+      fn_name,
+      provenance,
+      payload,
+    });
     const response = await app.callZome({
       cap: null,
       cell_id,

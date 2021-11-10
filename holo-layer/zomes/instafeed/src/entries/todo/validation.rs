@@ -1,6 +1,5 @@
 use hdk::prelude::*;
 use crate::TodoList;
-use crate::UIEnum;
 
 use thiserror::Error;
 
@@ -38,10 +37,10 @@ fn validate_create_entry_todolist(validate_data: ValidateData) -> ExternResult<V
         msgs.push("Id can not be null or empty".to_string());
         result = false;
     }
-    // if proposed_list.todos == "" {
-    //     msgs.push("Todos can not be null or empty".to_string());
-    //     result = false;
-    // }
+    if proposed_list.todos == "{}" {
+        msgs.push("Todos can not be null or empty".to_string());
+        result = false;
+    }
 
     if result == false {
         return Ok(ValidateCallbackResult::Invalid(msgs.join("\r")));

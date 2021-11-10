@@ -11,10 +11,13 @@ const {
   updateTodo,
 } = todoSlice.actions;
 
-const createTodoListZome = (cellIdString: string, list: TodoList): Promise<TodoListInfo> =>
+const createTodoListZome = (
+  cellIdString: string,
+  list: TodoList
+): Promise<TodoListInfo> =>
   zomeApis.todofeed[TodoFeedZomeActionStrings["0"]].create({
     cellIdString,
-    payload: {list.id, todos: JSON.stringify(list.todos)},
+    payload: { id: list.id, todos: JSON.stringify(list.todos) },
   });
 
 const fetchTodoListsZome = (cellIdString: string): Promise<TodoListsInfo> =>
@@ -22,10 +25,13 @@ const fetchTodoListsZome = (cellIdString: string): Promise<TodoListsInfo> =>
     cellIdString,
   });
 
-const updateTodoListZome = (cellIdString: string, list: TodoList): Promise<TodoListInfo> =>
+const updateTodoListZome = (
+  cellIdString: string,
+  list: TodoList
+): Promise<TodoListInfo> =>
   zomeApis.todofeed[TodoFeedZomeActionStrings["2"]].create({
     cellIdString,
-    payload:  {list.id, todos: JSON.stringify(list.todos)},
+    payload: { id: list.id, todos: JSON.stringify(list.todos) },
   });
 
 export {

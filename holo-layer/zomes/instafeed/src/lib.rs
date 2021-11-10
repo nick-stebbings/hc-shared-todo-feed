@@ -27,15 +27,15 @@ pub fn am_i_developer(_: ()) -> ExternResult<bool> {
     DnaProperties::am_i_developer()
 }
 
-#[hdk_extern]
-pub fn get_todolist_entry(input: TodoListDTO) -> ExternResult<TodoList> {
-    entries::todo::get_todolist_entry(input)
-}
+// #[hdk_extern]
+// pub fn get_todolist_entry(input: TodoListDTO) -> ExternResult<TodoList> {
+//     entries::todo::get_todolist_entry(input)
+// }
 
 // #[hdk_extern]
-// pub fn get_all_todolists(_: ()) -> ExternResult<Vec<<TodoList>>> { 
-//     Ok(inner_fetch_todolists(FetchOptions::All, GetOptions::content()))
-// }
+pub fn get_all_todolists(_: ()) -> ExternResult<Vec<WireElement<TodoList>>> { 
+    inner_fetch_todolists(FetchOptions::All, GetOptions::content())
+}
 
 /*
 SIGNALS

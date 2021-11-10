@@ -1,8 +1,10 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Todo, TodoList, TodoLists } from "./types";
+import { getType } from "typesafe-actions";
+import { Todo, TodoList, TodoLists, TodoListInfo, Dictionary } from "./types";
+import zomeApis from "services/zomeApis";
 import merge from "deepmerge";
 
-export const initialState: Partial<TodoLists<TodoList>> = {
+export const initialState: Partial<Dictionary<TodoList>> = {
   "0": { id: "0", todos: [] },
 };
 
@@ -30,7 +32,7 @@ export interface UpdateTodoPayload {
   todoPatch: Partial<Todo>;
 }
 
-export const todoSlice = createSlice({
+export const todoSlice: any = createSlice({
   name: "todo",
   initialState,
   reducers: {
@@ -69,20 +71,35 @@ export const todoSlice = createSlice({
     },
     updateTodo(state, action: PayloadAction<UpdateTodoPayload>) {
       const { listId, todoPatch } = action.payload;
-      const index =
-        state[listId] &&
-        state[listId].todos.findIndex((todo) => {
-          return todo.id == todoPatch.id;
-        });
+      const index: number = state[listId]!.todos.findIndex((todo) => {
+        return todo.id == todoPatch.id;
+      });
       const next = { ...state };
       const newList = [...(state[listId]?.todos || [])];
       newList[index] = merge.all([
-        [...state[listId].todos][index] || {},
+        [...state[listId]!.todos][index] || {},
         todoPatch,
       ]);
-      index !== -1 && (next[listId].todos = newList);
+      index !== -1 && (next[listId]!.todos = newList);
       state = next;
     },
+  },
+  extraReducers: (builder) => {
+    builder.addMatcher(zomeApis.todofeed['create_todolist'].success(), (state, action) => {
+      state.listDict = 
+    });
+    builder.addMatcher(zomeApis.todofeed['create_todolist'].failure(), (state) => {
+      return state;
+    });
+    // builder.addMatcher(isLoadingAction, (state) => ({
+    //   responseStatus: loadingState,
+    // }));
+    // builder.addMatcher(isErrorAction, (state) => ({
+    //   responseStatus: errorState,
+    // }));
+    // builder.addDefaultCase((state) => ({
+    //   responseStatus: idleState,
+    // }));
   },
 });
 

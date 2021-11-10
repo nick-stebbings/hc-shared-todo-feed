@@ -16,7 +16,6 @@ import {
   fetchTodoListsZome,
   updateList,
 } from "../../actions";
-
 interface indexProps {
   list: TodoList;
   hasBeenPersisted?: boolean;
@@ -47,13 +46,13 @@ const index: React.FC<indexProps> = ({
       case "Active":
         setCurrentList({
           id: listId,
-          todos: storedTodos.filter((td) => td.status == false),
+          todos: storedTodos.filter((td: Todo) => td.status == false),
         });
         return;
       case "Completed":
         setCurrentList({
           id: listId,
-          todos: storedTodos.filter((td) => td.status == true),
+          todos: storedTodos.filter((td: Todo) => td.status == true),
         });
         return;
     }
@@ -120,14 +119,14 @@ const index: React.FC<indexProps> = ({
     const uId = `${Math.floor(Math.random() * todos.length * 100)}`;
     const list = {
       id: hasBeenSaved ? listId : uId,
-      todos: currentList.todos,
+      todos: { ...currentList.todos },
     };
     const cellIdString = store.getState()?.cell?.cellIdString;
 
     try {
       hasBeenSaved
         ? dispatch(updateList({ list })) &&
-          dispatch(fetchTodoListsZome(cellIdString))
+          dispatch(updateTodoListZome(cellIdString, list))
         : dispatch(createList({ list })) &&
           dispatch(createTodoListZome(cellIdString, list));
       setHasBeenSaved(true);
