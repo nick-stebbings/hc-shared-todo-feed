@@ -11,6 +11,7 @@
     "@holochain-open-dev/cell-client": "git+https://github.com/holochain-open-dev/cell-client.git#build",
     "@holochain/conductor-api": "^0.2.1",
     "deepmerge": "^4.2.2",
+    "luxon": "^2.1.1",
     "react": "^17.0.0",
     "react-dom": "^17.0.0",
     "react-redux": "^7.2.5"
@@ -39,6 +40,7 @@
     "@testing-library/react": "^12.1.2",
     "@testing-library/user-event": "^13.2.1",
     "@types/jest": "^27.0.2",
+    "@types/luxon": "^2.0.7",
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
     "@types/react-redux": "^7.1.18",

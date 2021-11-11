@@ -7,11 +7,11 @@ import "./styles/styles.css";
 
 import { convertUint8ToHash } from "./app/utils";
 import { cellIdToString } from "services/reduxMiddleware";
-import connect from "services/hcWebSockets";
+import appWebSocketsConnect from "services/hcWebSockets";
 
 import { setCellId, setAgentPublicKey } from "features/cell/actions";
 
-connect().then((client: any) => {
+appWebSocketsConnect().then((client: any) => {
   const cellIdString = cellIdToString(client.cellData.cell_id);
   const agentPublicKey = convertUint8ToHash(client.cellData.cell_id[1]);
 

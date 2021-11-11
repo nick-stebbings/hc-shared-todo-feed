@@ -4,8 +4,9 @@ import { index as TodoItem } from "../TodoItem";
 import { Footer } from "./Footer";
 
 import { store } from "app/store";
-import { useAppDispatch } from "app/hooks";
+import { useAppDispatch, useAppSelector } from "app/hooks";
 import { TodoList, Todo } from "../../types";
+import { getCurrent } from "../../selectors";
 import {
   createTodo,
   deleteTodo,
@@ -33,9 +34,9 @@ const index: React.FC<indexProps> = ({
   const [newTodo, setNewTodo] = useState<string>("");
 
   const dispatch = useAppDispatch();
+  const storedTodos = useAppSelector(getCurrent)?.todos;
 
   const handleFilter = (e: any) => {
-    const storedTodos = store.getState().todo[listId].todos;
     switch (e.target.textContent) {
       case "All":
         setCurrentList({
@@ -62,23 +63,22 @@ const index: React.FC<indexProps> = ({
     const newValue = e.target.checked;
     const id = e.target.parentNode.parentNode.dataset.todo_id;
     const todoPatch = { id, status: newValue };
-    store.dispatch(updateTodo({ listId, todoPatch }));
+    store.dispatch(updateTodo({ todoPatch }));
     setCurrentList({
       id: listId,
-      todos: store.getState().todo[listId].todos,
+      todos: storedTodos,
     });
   };
 
   const handleDestroy = (e: any) => {
     const tdId = e.target.parentNode.dataset.todo_id;
     const deleteAction = deleteTodo({
-      listId,
       id: tdId,
     });
     dispatch(deleteAction);
     setCurrentList({
       id: listId,
-      todos: store.getState().todo[listId].todos,
+      todos: storedTodos,
     });
   };
 
@@ -98,13 +98,12 @@ const index: React.FC<indexProps> = ({
   const handleKeyUp = (e: any) => {
     if (e.key === "Enter") {
       const newTodoItem = {
-        id: `${listId}-${Math.floor(Math.random() * todos.length * 1000)}`,
+        id: `${listId}-${Math.floor(Math.random() * 1000)}`,
         description: newTodo,
         status: false,
       };
       dispatch(
         createTodo({
-          listId,
           todo: newTodoItem,
         })
       );
@@ -147,16 +146,17 @@ const index: React.FC<indexProps> = ({
         value={newTodo}
       />
       <ul className="todo-list" data-testid="list">
-        {currentList.todos.map((listItem: Todo) => {
-          return (
-            <TodoItem
-              key={listItem.id}
-              todo={listItem}
-              handleToggle={handleToggle}
-              handleDestroy={handleDestroy}
-            />
-          );
-        })}
+        {currentList &&
+          currentList.todos?.map((listItem: Todo) => {
+            return (
+              <TodoItem
+                key={listItem.id}
+                todo={listItem}
+                handleToggle={handleToggle}
+                handleDestroy={handleDestroy}
+              />
+            );
+          })}
       </ul>
       <Footer
         count={

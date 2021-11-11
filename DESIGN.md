@@ -4,16 +4,30 @@
 
 Jerry Seinfeld had a technique to keep writing jokes: He made a red mark on the calendar each day that he did some writing. His mission then became to keep making a chain of red marks as long as he could. Author John Boyne had a similar system where he used Red Dots in a personal diary. This app is a way of modelling this technique with Holochain and React/Redux.
 
+## Utility Types
+
+```rust
+struct Day {
+  start_time: std::time::Instant,
+  end_time: std::time::Instant
+  // a day later (for RedDots),
+  // any multiple of days up until the present (for Habits)
+}
+
+struct TimeFrame {
+  from_date: f64,
+  to_date: f64,
+}
+
+enum Interval {
+  Day,
+  Custom
+}
+```
+
 ## Entry Types
 
 At a basic level, we are recording 'a thing that was done' and 'how often it was done'. I will assume an interval of 1 day's duration (like Seinfeld's calendar days).
-
-```rust
-struct Interval {
-  start_time: std::time::Instant,
-  end_time: std::time::Instant // a day later (for RedDots), any multiple of days up until the present (for Habits)
-}
-```
 
 ### Habit
 
@@ -21,7 +35,7 @@ We need a model for recording when we started recording (a timeframe), and to ho
 
 ```rust
 struct Habit {
-  timeframe: Interval, // an interval over which the behaviour was recorded (by default until present)
+  timeframe: Interval::Custom, // an interval over which the behaviour was recorded (by default until present)
   list_hash: HeaderHashB64 // A link to the list (the specific behaviours)
   meta: HashMap<String, String>, // name, description etc.
 }

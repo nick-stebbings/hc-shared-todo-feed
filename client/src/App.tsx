@@ -1,42 +1,44 @@
 import React, { useState, useEffect } from "react";
-
 import { useAppDispatch, useAppSelector } from "./app/hooks";
+
 import { Profiles } from "features/user/components/Profiles";
 import TodoList from "features/todo/components/TodoList";
-import { createList } from "features/todo/actions";
+
+import { fetchTodoListsZome } from "features/todo/actions";
+
+import { getStringId } from "features/cell/selectors";
+import { getCurrent } from "features/todo/selectors";
 
 interface indexProps {}
 
 export const App: React.FC<indexProps> = ({}) => {
   const dispatch = useAppDispatch();
-  const storedLists = useAppSelector((state: any) => state.todo);
-  const [lists, setLists] = useState(storedLists);
+  const currentList = useAppSelector(getCurrent);
+  const cellIdString = useAppSelector(getStringId);
+
+  const [lists, setLists] = useState(currentList);
   let [listObj, setListObj] = useState(JSON.stringify(lists));
+
   useEffect(() => {
     loadTodos().then(() => {
-      setLists(storedLists);
+      setLists(currentList);
+      setListObj(JSON.stringify(currentList));
     });
   }, [listObj]);
+
   const loadTodos = async () => {
-    const list = {
-      id: "1",
-      todos: [
-        { id: "1", description: "Get milk", status: false },
-        { id: "2", description: "Get bread", status: true },
-        { id: "3", description: "Pick up mail", status: true },
-      ],
-    };
-    dispatch(createList({ list }));
-    setListObj(JSON.stringify(list)); // for useEffect dependency array
+    (await cellIdString) && dispatch(fetchTodoListsZome(cellIdString));
   };
+
   return (
     <div className="App">
-      <div style={{ width: "100%", height: "100%", display: "flex" }}>
-        {Object.keys(lists)
-          .slice(1) // Skip the default list
-          .map((id, i) => (
-            <TodoList list={{ id, todos: lists[id].todos }} key={i} />
-          ))}
+      {/* <div className="public-lists container">
+        {Object.keys(lists).map((id, i) => (
+          <TodoList list={{ id, todos: lists[id].todos }} key={i} />
+        ))}
+      </div> */}
+      <div className="current-list container">
+        {lists && <TodoList list={lists} />}
         <Profiles />
       </div>
     </div>
