@@ -4,13 +4,7 @@ import {
   EntryHashB64,
 } from "@holochain-open-dev/core-types";
 
-import { Duration, DateTime } from "@types/luxon";
-
-interface TimeFrame {
-  fromDate: DateTime;
-  todDate: DateTime;
-  length: Duration;
-}
+import { TimeFrame } from "app/types";
 
 export interface RedDot {
   timeframe: TimeFrame;

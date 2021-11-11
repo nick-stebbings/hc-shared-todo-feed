@@ -3,13 +3,10 @@ import { InstallAppRequest } from "@holochain/conductor-api";
 import path from "path";
 
 export const conductorConfig = Config.gen({});
-export const Zome_Name = "instafeed";
+export const Zome_Name = "red_dot";
 export const Default_Developer_Address =
   "uhCAkbs0mibHm7rB0ZPkZZzhHC55KwmDxt6uR9x2XgFQ82OYvKwR7";
-export const instafeedDna = path.join(
-  __dirname,
-  "../../workdir/dna/hInstagram.dna"
-);
+export const red_dotDna = path.join(__dirname, "../../workdir/dna/when.dna");
 
 import { Base64 } from "js-base64";
 export function serializeHash(hash) {
@@ -30,14 +27,14 @@ export const InstallAgentApp = async (
     progenitor = serializeHash(agent_key);
   }
   const hash_app = await adminWs.registerDna({
-    path: instafeedDna,
+    path: red_dotDna,
     properties: {
       developer_address: progenitor,
     },
   });
 
   const req: InstallAppRequest = {
-    installed_app_id: `instafeed-app-` + agentName,
+    installed_app_id: `red_dot-app-` + agentName,
     agent_key: agent_key,
     dnas: [
       {
@@ -63,14 +60,14 @@ export const InstallAgentsApp = async (s, agentNames: string[]) => {
   progenitor = serializeHash(agent_developer_key);
 
   const hash_dna = await adminWs.registerDna({
-    path: instafeedDna,
+    path: red_dotDna,
     properties: {
       developer_address: progenitor,
     },
   });
 
   const req_for_developer: InstallAppRequest = {
-    installed_app_id: `instafeed-app-` + agentNames[0],
+    installed_app_id: `red_dot-app-` + agentNames[0],
     agent_key: agent_developer_key,
     dnas: [
       {
@@ -81,7 +78,7 @@ export const InstallAgentsApp = async (s, agentNames: string[]) => {
   };
 
   const req_for_non_developer: InstallAppRequest = {
-    installed_app_id: `instafeed-app-` + agentNames[1],
+    installed_app_id: `red_dot-app-` + agentNames[1],
     agent_key: agent_non_developer_key,
     dnas: [
       {

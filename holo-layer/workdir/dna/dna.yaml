@@ -1,11 +1,11 @@
 ---
 manifest_version: "1"
-name: hInstagram
+name: when
 uuid: 00000000-0000-0000-0000-000000000000
 properties:
   developer_address: uhCAkESYQW-4X6qfjxADWaRBAS3Z37-oP7AxuTT0BgKCjcs2OFgHL
 zomes:
-  - name: instafeed
-    bundled: ../../target/wasm32-unknown-unknown/release/instafeed.wasm
+  - name: red_dot
+    bundled: ../../target/wasm32-unknown-unknown/release/red_dot.wasm
   - name: profiles
     bundled: ../../target/wasm32-unknown-unknown/release/profiles.wasm

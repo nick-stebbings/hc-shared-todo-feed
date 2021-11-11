@@ -6,14 +6,13 @@ import { createZomeCallAsyncAction } from "./reduxMiddleware";
 interface APIs {
   // One per zome
   profiles: object;
-  todofeed: object;
+  redDot: object;
 }
 
-export enum TodoFeedZomeActionStrings {
-  "create_todolist",
-  "get_all_todolists",
-  "update_todolist",
-}
+export enum RedDotActionTypes {}
+// "create_todolist",
+// "get_all_todolists",
+// "update_todolist",
 
 export enum ProfilesZomeActionStrings {
   "create_profile",
@@ -23,7 +22,7 @@ export enum ProfilesZomeActionStrings {
   "search_profiles",
 }
 
-const apis: APIs = { profiles: {}, todofeed: {} };
+const apis: APIs = { profiles: {}, redDot: {} };
 
 for (const zomeFunctionName in ProfilesZomeActionStrings) {
   if (isNaN(+zomeFunctionName)) {
@@ -34,10 +33,10 @@ for (const zomeFunctionName in ProfilesZomeActionStrings) {
   }
 }
 
-for (const zomeFunctionName in TodoFeedZomeActionStrings) {
+for (const zomeFunctionName in RedDotActionTypes) {
   if (isNaN(+zomeFunctionName)) {
-    apis.todofeed[zomeFunctionName] = createZomeCallAsyncAction(
-      "instafeed", // TODO rename this
+    apis.redDot[zomeFunctionName] = createZomeCallAsyncAction(
+      "red_dot", // TODO rename this
       zomeFunctionName
     );
   }

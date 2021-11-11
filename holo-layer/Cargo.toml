@@ -1,6 +1,6 @@
 [workspace]
 members = [
-  "zomes/instafeed",
+  "zomes/red_dot",
   "zomes/profiles",
 ]
 

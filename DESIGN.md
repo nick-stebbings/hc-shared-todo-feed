@@ -116,3 +116,15 @@ I will create and link anchors to new entries for ALL_HABITS, ALL_TODOLISTS, ALL
 Although it is not necessary to store a list of intervals that **could** have been marked in the DHT (as they can be calculated automatically - each is a day long by default and subdivides the Habit timeframe) it is useful to have these intervals (Spaces) in the Redux store. This allows a sequential division of time into calendar days by 'filling in the blanks' of the RedDot intervals.
 
 We can denote the spaces D<sub>x</sub>, D<sub>x-1</sub>, etc., counting backwards from day x (the current day, or the x<sup>th</sup> day of recording the habit.)
+
+#### Example Space
+
+```js
+{
+  timeframe : {
+    start: DateTime,
+    end: DateTime,
+    length: Duration
+  },
+}
+```

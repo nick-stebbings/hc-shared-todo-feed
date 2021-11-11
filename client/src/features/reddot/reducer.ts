@@ -6,16 +6,20 @@ import {
   DeleteRedDotPayload,
   UpdateRedDotPayload,
 } from "./types";
+import { Dictionary } from "app/types";
+
 import merge from "deepmerge";
 import luxon from "luxon";
 
-export const initialState: Partial<RedDot> = {
-  timeframe: {
-    fromDate: luxon.DateTime.local().startOf("day"),
-    toDate: luxon.DateTime.local().endOf("day"),
-    length: luxon.Duration.fromObject({ days: 1 }),
+export const initialState: Dictionary<RedDot> = {
+  myRedDots: {
+    timeframe: {
+      fromDate: luxon.DateTime.local().startOf("day"),
+      toDate: luxon.DateTime.local().endOf("day"),
+      length: luxon.Duration.fromObject({ days: 1 }),
+    },
+    habit_hash: "",
   },
-  habit_hash: "",
 };
 
 export const redDotSlice = createSlice({

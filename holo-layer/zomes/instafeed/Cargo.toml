@@ -1,11 +1,11 @@
 [package]
-name = "instafeed"
+name = "red_dot"
 version = "0.1.0"
 authors = ["Nick Stebb <n.stebbings@gmail.com>"]
 edition = "2018"
 
 [lib]
-name = "instafeed"
+name = "red_dot"
 crate-type = ["cdylib", "rlib"]
 
 [dependencies]

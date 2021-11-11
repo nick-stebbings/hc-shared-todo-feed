@@ -1,14 +1,14 @@
 ---
 manifest_version: "1"
-name: hInstagram
+name: when
 description: a lite instagram clone for holochain
 slots:
-  - id: hInstagram
+  - id: when
     provisioning:
       strategy: create
       deferred: false
     dna:
-      bundled: "../dna/hInstagram.dna"
+      bundled: "../dna/when.dna"
       properties: ~
       uid: ~
       version: ~

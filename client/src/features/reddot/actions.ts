@@ -1,4 +1,4 @@
-import zomeApis, { actionTypes } from "services/zomeApis";
+import zomeApis, { RedDotActionTypes } from "services/zomeApis";
 
 import { RedDot, RedDotInfo } from "./types";
 import { redDotSlice } from "./reducer";
@@ -8,13 +8,13 @@ const { createRedDot, deleteRedDot, updateRedDot } = redDotSlice.actions;
 //   cellIdString: string,
 //   list: RedDot
 // ): Promise<RedDotInfo> =>
-//   zomeApis.reddot[actionTypes["0"]].create({
+//   zomeApis.reddot[RedDotActionTypes["0"]].create({
 //     cellIdString,
 //     payload: payload,
 //   });
 
 // const fetchRedDotZome = (cellIdString: string): Promise<RedDotInfo> =>
-//   zomeApis.reddot[actionTypes["1"]].create({
+//   zomeApis.reddot[RedDotActionTypes["1"]].create({
 //     cellIdString,
 //   });
 
@@ -22,13 +22,13 @@ const { createRedDot, deleteRedDot, updateRedDot } = redDotSlice.actions;
 //   cellIdString: string,
 //   list: RedDot
 // ): Promise<TodoListInfo> =>
-//   zomeApis.reddot[actionTypes["2"]].create({
+//   zomeApis.reddot[RedDotActionTypes["2"]].create({
 //     cellIdString,
 //     payload: payload,
 //   });
 
 export {
-  actionTypes,
+  RedDotActionTypes,
   createRedDot,
   deleteRedDot,
   updateRedDot,

@@ -4,7 +4,7 @@ import {
   EntryHashB64,
 } from "@holochain-open-dev/core-types";
 
-export type Dictionary<T> = { [key: string]: T };
+import { Dictionary } from "app/types";
 export interface Todo {
   id: string | number;
   description: string;
