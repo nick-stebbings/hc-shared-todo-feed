@@ -6,7 +6,7 @@ import {
 
 import { TimeFrame } from "app/types";
 
-interface HabitMeta {
+export interface HabitMeta {
   name: string;
   id: number;
 }

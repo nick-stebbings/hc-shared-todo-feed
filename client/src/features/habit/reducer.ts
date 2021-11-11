@@ -6,6 +6,7 @@ import {
   DeleteHabitPayload,
   UpdateHabitPayload,
 } from "./types";
+import { RedDotActionTypes } from "services/restApis";
 import { Dictionary } from "app/types";
 
 import merge from "deepmerge";
@@ -47,6 +48,21 @@ export const habitSlice = createSlice({
         [String(id)]: { habit },
       };
     },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(RedDotActionTypes["1"], (state, action) => {
+      debugger;
+      return { ...state };
+    });
+    //  builder.addMatcher(isLoadingAction, (state) => ({
+    //    responseStatus: loadingState,
+    //  }));
+    //  builder.addMatcher(isErrorAction, (state) => ({
+    //    responseStatus: errorState,
+    //  }));
+    //  builder.addDefaultCase((state) => ({
+    //    responseStatus: idleState,
+    //  }));
   },
 });
 

@@ -9,10 +9,11 @@ interface APIs {
   redDot: object;
 }
 
-export enum RedDotActionTypes {}
-// "create_todolist",
-// "get_all_todolists",
-// "update_todolist",
+export enum RedDotActionTypes {
+  "create_habit",
+  "fetch_habit",
+  "update_habit",
+}
 
 export enum ProfilesZomeActionStrings {
   "create_profile",
