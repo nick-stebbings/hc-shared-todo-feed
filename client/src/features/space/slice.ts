@@ -1,10 +1,4 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import {
-  Space,
-  NewSpacePayload,
-  DeleteSpacePayload,
-  UpdateSpacePayload,
-} from "./types";
 import { Dictionary, TimeFrame } from "app/types";
 
 export interface Space {
@@ -35,33 +29,17 @@ const daySpace = (numberOfDays: any = 1): Space => ({
   },
 });
 
+const weekOfDaySpaces = (): Space[] => Array.from("1234567").map(daySpace);
+
 export const initialState: Dictionary<Space[]> = {
-  thisWeek: Array.from("1234567").map(daySpace),
-  lastWeek: Array.from("1234567").map(daySpace),
+  thisWeek: weekOfDaySpaces,
+  lastWeek: weekOfDaySpaces,
 };
 
 export const spaceSlice = createSlice({
   name: "space",
   initialState,
-  reducers: {
-    createSpace(state, action: PayloadAction<NewSpacePayload>) {
-      const { spaces, id } = action.payload.space;
-      return {
-        ...state,
-        [String(id)]: { space: spaces || [] },
-      };
-    },
-    deleteSpace(state, action: PayloadAction<DeleteSpacePayload>) {
-      delete state[action.payload.id];
-    },
-    updateSpace(state, action: PayloadAction<NewSpacePayload>) {
-      const { spaces, id } = action.payload.space;
-      return {
-        ...state,
-        [String(id)]: { spaces },
-      };
-    },
-  },
+  reducers: {},
 });
 
 export default spaceSlice;
