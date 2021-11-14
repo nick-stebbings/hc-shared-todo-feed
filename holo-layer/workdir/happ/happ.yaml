@@ -1,7 +1,7 @@
 ---
 manifest_version: "1"
 name: when
-description: a lite instagram clone for holochain
+description: a way of recording when things happen habitually
 slots:
   - id: when
     provisioning:
