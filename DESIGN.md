@@ -1,9 +1,3 @@
-# Red Dot Marking System (aka 'When')
-
-## Concept
-
-Jerry Seinfeld had a technique to keep writing jokes: He made a red mark on the calendar each day that he did some writing. His mission then became to keep making a chain of red marks as long as he could. Author John Boyne had a similar system where he used Red Dots in a personal diary. This app is a way of modelling this technique with Holochain and React/Redux.
-
 ## Utility Types
 
 ```rust
