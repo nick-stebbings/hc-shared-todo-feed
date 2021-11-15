@@ -7,12 +7,6 @@ Jerry Seinfeld had a technique to keep writing jokes: He made a red mark on the 
 ## Utility Types
 
 ```rust
-struct Day {
-  start_time: std::time::Instant,
-  end_time: std::time::Instant
-  // a day later (for RedDots),
-  // any multiple of days up until the present (for Habits)
-}
 
 struct TimeFrame {
   from_date: f64,
@@ -20,8 +14,8 @@ struct TimeFrame {
 }
 
 enum Interval {
-  Day,
-  Custom
+  Day(TimeFrame),
+  Custom(TimeFrame)
 }
 ```
 
