@@ -11,7 +11,7 @@ Jerry Seinfeld had a technique to keep writing jokes: He made a red mark on the 
 
 Follow these instructions to create and run a local Holochain conductor: https://www.youtube.com/watch?v=IR6Sv2jK_WU&t=1653s
   - create a new agent
-  - install the hApp bundle from `workdir/happ` with `app-id=todofeed` and the agent public key from the command above.
+  - install the hApp bundle from `workdir/happ` with `app-id=when` and the agent public key from the command above.
   - Set up an app websockets interface on port 8081
 
 ## Setup for client
