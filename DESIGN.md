@@ -1,3 +1,7 @@
+## User Stories
+The user should be able to create a potential Event.
+The user should be able to 
+
 ## Utility Types
 
 ```rust
@@ -15,21 +19,21 @@ enum Interval {
 
 ## Entry Types
 
-At a basic level, we are recording 'a thing that was done' and 'how often it was done'. I will assume an interval of 1 day's duration (like Seinfeld's calendar days).
+At a basic level, we are recording 'a thing that was done', an Event, and 'how often it was done', an EventRecurrence. I will assume an interval of 1 day's duration (like Seinfeld's calendar days) but allow for a custom option.
 
-### Habit
+### Event
 
-We need a model for recording when we started recording (a timeframe), and to hold metadata about the continuing event (like a description). If we want to change the interval of recording, we could make it a property of this Habit model.
+This could be any type of event. There is an option to have a duration of event.
 
 ```rust
-struct Habit {
-  timeframe: Interval::Custom, // an interval over which the behaviour was recorded (by default until present)
+struct Event {
+  created_at: TimeStamp
   list_hash: HeaderHashB64 // A link to the list (the specific behaviours)
   meta: HashMap<String, String>, // name, description etc.
 }
 ```
 
-#### Example Habit
+#### Example Event
 
 ```js
 {
@@ -45,10 +49,9 @@ struct Habit {
 }
 ```
 
-### Red Dot
+### EventRecurrence
 
-For each Habit there exists a number of intervals from the time we started recording the behaviour up until the present moment. Each of these intervals is a potential Space for a red dot. We only need to mark off things when we notice they **happened**, so we don't need to mark the days that the event didn't happen (we get them by default, they are implied by lack of a red dot).
-
+For each Event there exists a number of slots from the time we started recording the behaviour (Event.created_at) up until the present moment. Each of these slots is a potential Space for an event to occur. If we have an event duration (not an Instant)
 ```rust
 struct RedDot {
   timeframe: Interval::Day, // sub-interval over which the behaviour was recorded (by default a day long). This be within the Habit timeframe
